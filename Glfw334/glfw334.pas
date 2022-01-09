@@ -672,7 +672,7 @@ procedure glfwGetMonitorPos(monitor: pGLFWmonitor; var xpos: GLFW_INT;
 GLFWAPI void glfwGetMonitorWorkarea(GLFWmonitor* monitor, int* xpos, int* ypos, int* width, int* height);}
 
 procedure glfwGetMonitorWorkarea(monitor: pGLFWmonitor;
-  var xpos, ypos, Width, Height: GLFW_INT);
+  var xpos, ypos, Width, Height: GLFW_INT); cdecl; external GLFW_DLL;
 
 procedure glfwGetMonitorPhysicalSize(Monitor: pGLFWmonitor; var Width: GLFW_INT;
   var Height: GLFW_INT); cdecl; external GLFW_DLL;
@@ -710,6 +710,7 @@ procedure glfwGetMonitorPhysicalSize(Monitor: pGLFWmonitor; var Width: GLFW_INT;
 GLFWAPI void glfwGetMonitorContentScale(GLFWmonitor* monitor, float* xscale, float* yscale);}
 
 procedure glfwGetMonitorContentScale(monitor: pGLFWmonitor; var xscale, yscale: single);
+  cdecl; external GLFW_DLL;
 
 function glfwGetMonitorName(Monitor: pGLFWmonitor): PChar; cdecl; external GLFW_DLL;
 
@@ -1076,7 +1077,7 @@ function glfwGetWindowMonitor(window: pGLFWwindow): pGLFWmonitor;
  */
 GLFWAPI void glfwSetWindowMonitor(GLFWwindow* window, GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);}
 procedure glfwSetWindowMonitor(window: pGLFWwindow; monitor: pGLFWmonitor;
-  xpos, ypos, Width, Height, refreshRate: integer);
+  xpos, ypos, Width, Height, refreshRate: integer); cdecl; external GLFW_DLL;
 
 procedure glfwGetWindowAttrib(window: pGLFWwindow; attrib: integer);
   cdecl; external GLFW_DLL;
@@ -1797,7 +1798,7 @@ procedure glfwSetTime(time: double); cdecl; external GLFW_DLL;
  */
 GLFWAPI uint64_t glfwGetTimerValue(void);
 }
-function glfwGetTimerValue(): UInt64;
+function glfwGetTimerValue(): uint64; cdecl; external GLFW_DLL;
 {
 /*! @brief Returns the frequency, in Hz, of the raw timer.
  *
@@ -1819,7 +1820,7 @@ function glfwGetTimerValue(): UInt64;
  */
 GLFWAPI uint64_t glfwGetTimerFrequency(void);}
 
-function glfwGetTimerFrequency(): UInt64;
+function glfwGetTimerFrequency(): uint64;     cdecl; external GLFW_DLL;
 
 //========================================================================
 //Context
@@ -1910,7 +1911,7 @@ function glfwVulkanSupported(): integer; cdecl; external GLFW_DLL;
  *  @ingroup vulkan
  */
 GLFWAPI const char** glfwGetRequiredInstanceExtensions(uint32_t* count);}
-function glfwGetRequiredInstanceExtensions(var Count: UInt32): PChar;
+function glfwGetRequiredInstanceExtensions(var Count: uint32): PChar;
   cdecl; external GLFW_DLL;
 
 
