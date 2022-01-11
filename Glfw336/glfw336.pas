@@ -641,10 +641,10 @@ GLFW_FALSE = 0;
 //========================================================================
 function glfwInit: integer cdecl; external GLFW_DLL;
 procedure glfwTerminate; cdecl; external GLFW_DLL;
-procedure glfwGetVersion(major, minor, rev: integer);
+procedure glfwGetVersion(var major,  minor,  rev: integer);
   cdecl; external GLFW_DLL;
 function glfwGetVersionString: PChar; cdecl; external GLFW_DLL;
-function glfwGetError(description: PChar): integer; cdecl; external GLFW_DLL;
+function glfwGetError(var description: PChar): integer; cdecl; external GLFW_DLL;
 
 //========================================================================
 //Monitor
