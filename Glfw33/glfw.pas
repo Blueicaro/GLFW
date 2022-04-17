@@ -33,10 +33,11 @@ More info:
 {
   Pascal header translate by: Jorge Turiel (Aka BlueIcaro)
   with the help of the lazarus community (http://www.lazarus.freepascal.org/index.php)
+  GLFW 3.3.7; Date: 220417. Updated headers to  3.3.7 revision
   GLFW 3.1; Date: 20150216
   GLFW 3; Date: 20130912
 }
-unit glfw334;
+unit glfw;
 
 {$mode objfpc}{$H+}
 {$WARN 2005 off : Comment level $1 found}
@@ -259,7 +260,7 @@ const
 
   GLFW_VERSION_MINOR = 3;
 
-  GLFW_VERSION_REVISION = 4;
+  GLFW_VERSION_REVISION = 7;
 
 
 

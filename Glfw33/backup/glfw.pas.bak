@@ -36,10 +36,10 @@ More info:
   GLFW 3.1; Date: 20150216
   GLFW 3; Date: 20130912
 }
-unit glfw334;
+unit glfw;
 
 {$mode objfpc}{$H+}
-
+{$WARN 2005 off : Comment level $1 found}
 interface
 
 uses
