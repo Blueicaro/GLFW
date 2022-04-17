@@ -39,7 +39,7 @@ More info:
 unit glfw336;
 
 {$mode objfpc}{$H+}
-
+{$WARN 2005 off : Comment level $1 found}
 interface
 
 

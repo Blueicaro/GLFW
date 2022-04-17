@@ -39,7 +39,7 @@ More info:
 unit glfw334;
 
 {$mode objfpc}{$H+}
-
+{$WARN 2005 off : Comment level $1 found}
 interface
 
 uses
@@ -672,7 +672,7 @@ procedure glfwGetMonitorPos(monitor: pGLFWmonitor; var xpos: GLFW_INT;
 GLFWAPI void glfwGetMonitorWorkarea(GLFWmonitor* monitor, int* xpos, int* ypos, int* width, int* height);}
 
 procedure glfwGetMonitorWorkarea(monitor: pGLFWmonitor;
-  var xpos, ypos, Width, Height: GLFW_INT);
+  var xpos, ypos, Width, Height: GLFW_INT); cdecl; external GLFW_DLL;
 
 procedure glfwGetMonitorPhysicalSize(Monitor: pGLFWmonitor; var Width: GLFW_INT;
   var Height: GLFW_INT); cdecl; external GLFW_DLL;
@@ -710,6 +710,7 @@ procedure glfwGetMonitorPhysicalSize(Monitor: pGLFWmonitor; var Width: GLFW_INT;
 GLFWAPI void glfwGetMonitorContentScale(GLFWmonitor* monitor, float* xscale, float* yscale);}
 
 procedure glfwGetMonitorContentScale(monitor: pGLFWmonitor; var xscale, yscale: single);
+  cdecl; external GLFW_DLL;
 
 function glfwGetMonitorName(Monitor: pGLFWmonitor): PChar; cdecl; external GLFW_DLL;
 
@@ -1076,7 +1077,7 @@ function glfwGetWindowMonitor(window: pGLFWwindow): pGLFWmonitor;
  */
 GLFWAPI void glfwSetWindowMonitor(GLFWwindow* window, GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);}
 procedure glfwSetWindowMonitor(window: pGLFWwindow; monitor: pGLFWmonitor;
-  xpos, ypos, Width, Height, refreshRate: integer);
+  xpos, ypos, Width, Height, refreshRate: integer); cdecl; external GLFW_DLL;
 
 procedure glfwGetWindowAttrib(window: pGLFWwindow; attrib: integer);
   cdecl; external GLFW_DLL;
@@ -1797,7 +1798,7 @@ procedure glfwSetTime(time: double); cdecl; external GLFW_DLL;
  */
 GLFWAPI uint64_t glfwGetTimerValue(void);
 }
-function glfwGetTimerValue(): UInt64;
+function glfwGetTimerValue(): uint64; cdecl; external GLFW_DLL;
 {
 /*! @brief Returns the frequency, in Hz, of the raw timer.
  *
@@ -1819,7 +1820,7 @@ function glfwGetTimerValue(): UInt64;
  */
 GLFWAPI uint64_t glfwGetTimerFrequency(void);}
 
-function glfwGetTimerFrequency(): UInt64;
+function glfwGetTimerFrequency(): uint64;     cdecl; external GLFW_DLL;
 
 //========================================================================
 //Context
@@ -1910,7 +1911,7 @@ function glfwVulkanSupported(): integer; cdecl; external GLFW_DLL;
  *  @ingroup vulkan
  */
 GLFWAPI const char** glfwGetRequiredInstanceExtensions(uint32_t* count);}
-function glfwGetRequiredInstanceExtensions(var Count: UInt32): PChar;
+function glfwGetRequiredInstanceExtensions(var Count: uint32): PChar;
   cdecl; external GLFW_DLL;
 
 
@@ -1958,6 +1959,111 @@ function glfwGetRequiredInstanceExtensions(var Count: UInt32): PChar;
 GLFWAPI GLFWvkproc glfwGetInstanceProcAddress(VkInstance instance, const char* procname);}
 function glfwGetInstanceProcAddress(instance: VkInstance;
   procname: PChar): pglfwGetInstanceProcAddress; cdecl; external GLFW_DLL;
+{
+/*! @brief Returns whether the specified queue family can present images.
+ *
+ *  This function returns whether the specified queue family of the specified
+ *  physical device supports presentation to the platform GLFW was built for.
+ *
+ *  If Vulkan or the required window surface creation instance extensions are
+ *  not available on the machine, or if the specified instance was not created
+ *  with the required extensions, this function returns `GLFW_FALSE` and
+ *  generates a @ref GLFW_API_UNAVAILABLE error.  Call @ref glfwVulkanSupported
+ *  to check whether Vulkan is at least minimally available and @ref
+ *  glfwGetRequiredInstanceExtensions to check what instance extensions are
+ *  required.
+ *
+ *  @param[in] instance The instance that the physical device belongs to.
+ *  @param[in] device The physical device that the queue family belongs to.
+ *  @param[in] queuefamily The index of the queue family to query.
+ *  @return `GLFW_TRUE` if the queue family supports presentation, or
+ *  `GLFW_FALSE` otherwise.
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+ *  GLFW_API_UNAVAILABLE and @ref GLFW_PLATFORM_ERROR.
+ *
+ *  @remark @macos This function currently always returns `GLFW_TRUE`, as the
+ *  `VK_MVK_macos_surface` extension does not provide
+ *  a `vkGetPhysicalDevice*PresentationSupport` type function.
+ *
+ *  @thread_safety This function may be called from any thread.  For
+ *  synchronization details of Vulkan objects, see the Vulkan specification.
+ *
+ *  @sa @ref vulkan_present
+ *
+ *  @since Added in version 3.2.
+ *
+ *  @ingroup vulkan
+ */
+GLFWAPI int glfwGetPhysicalDevicePresentationSupport(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);}
+
+function glfwGetPhysicalDevicePresentationSupport(instance: VkInstance;
+  device: VkPhysicalDevice; queuefamily: UInt32): integer; cdecl; external GLFW_DLL;
+ {/*! @brief Creates a Vulkan surface for the specified window.
+ *
+ *  This function creates a Vulkan surface for the specified window.
+ *
+ *  If the Vulkan loader or at least one minimally functional ICD were not found,
+ *  this function returns `VK_ERROR_INITIALIZATION_FAILED` and generates a @ref
+ *  GLFW_API_UNAVAILABLE error.  Call @ref glfwVulkanSupported to check whether
+ *  Vulkan is at least minimally available.
+ *
+ *  If the required window surface creation instance extensions are not
+ *  available or if the specified instance was not created with these extensions
+ *  enabled, this function returns `VK_ERROR_EXTENSION_NOT_PRESENT` and
+ *  generates a @ref GLFW_API_UNAVAILABLE error.  Call @ref
+ *  glfwGetRequiredInstanceExtensions to check what instance extensions are
+ *  required.
+ *
+ *  The window surface cannot be shared with another API so the window must
+ *  have been created with the [client api hint](@ref GLFW_CLIENT_API_attrib)
+ *  set to `GLFW_NO_API` otherwise it generates a @ref GLFW_INVALID_VALUE error
+ *  and returns `VK_ERROR_NATIVE_WINDOW_IN_USE_KHR`.
+ *
+ *  The window surface must be destroyed before the specified Vulkan instance.
+ *  It is the responsibility of the caller to destroy the window surface.  GLFW
+ *  does not destroy it for you.  Call `vkDestroySurfaceKHR` to destroy the
+ *  surface.
+ *
+ *  @param[in] instance The Vulkan instance to create the surface in.
+ *  @param[in] window The window to create the surface for.
+ *  @param[in] allocator The allocator to use, or `NULL` to use the default
+ *  allocator.
+ *  @param[out] surface Where to store the handle of the surface.  This is set
+ *  to `VK_NULL_HANDLE` if an error occurred.
+ *  @return `VK_SUCCESS` if successful, or a Vulkan error code if an
+ *  [error](@ref error_handling) occurred.
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+ *  GLFW_API_UNAVAILABLE, @ref GLFW_PLATFORM_ERROR and @ref GLFW_INVALID_VALUE
+ *
+ *  @remark If an error occurs before the creation call is made, GLFW returns
+ *  the Vulkan error code most appropriate for the error.  Appropriate use of
+ *  @ref glfwVulkanSupported and @ref glfwGetRequiredInstanceExtensions should
+ *  eliminate almost all occurrences of these errors.
+ *
+ *  @remark @macos This function currently only supports the
+ *  `VK_MVK_macos_surface` extension from MoltenVK.
+ *
+ *  @remark @macos This function creates and sets a `CAMetalLayer` instance for
+ *  the window content view, which is required for MoltenVK to function.
+ *
+ *  @thread_safety This function may be called from any thread.  For
+ *  synchronization details of Vulkan objects, see the Vulkan specification.
+ *
+ *  @sa @ref vulkan_surface
+ *  @sa @ref glfwGetRequiredInstanceExtensions
+ *
+ *  @since Added in version 3.2.
+ *
+ *  @ingroup vulkan
+ */
+GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance, GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);}
+
+function glfwCreateWindowSurface(instance: VkInstance; window: pGLFWwindow;
+  var allocator: VkAllocationCallbacks; var surface: VkSurfaceKHR): VkResult;
+  cdecl; external GLFW_DLL;
+
 {$ENDIF}
 
 //========================================================================

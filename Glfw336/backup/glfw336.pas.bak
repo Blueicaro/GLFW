@@ -36,14 +36,13 @@ More info:
   GLFW 3.1; Date: 20150216
   GLFW 3; Date: 20130912
 }
-unit glfw334;
+unit glfw336;
 
 {$mode objfpc}{$H+}
-{$WARN 2005 off : Comment level $1 found}
+
 interface
 
-uses
-  Classes, SysUtils, GL;
+
 //Estructuras
 type
   GLFW_INT = integer;
@@ -250,6 +249,20 @@ const
 {$ELSE}
   GLFW_DLL = 'GLFW3.so';
 {$ENDIF}
+ {  This is only semantic sugar for the number 1.  You can instead use `1` or
+   `true` or `_True` or `GL_TRUE` or `VK_TRUE` or anything else that is equal
+   to one.
+ }
+
+ GLFW_TRUE = 1;
+
+ {
+  This is only semantic sugar for the number 0.  You can instead use `0` or
+  `false` or `_False` or `GL_FALSE` or `VK_FALSE` or anything else that is
+  equal to zero.
+}
+GLFW_FALSE = 0;
+
 
   //========================================================================
   // GLFW version
@@ -259,7 +272,7 @@ const
 
   GLFW_VERSION_MINOR = 3;
 
-  GLFW_VERSION_REVISION = 4;
+  GLFW_VERSION_REVISION = 6;
 
 
 
@@ -628,10 +641,10 @@ const
 //========================================================================
 function glfwInit: integer cdecl; external GLFW_DLL;
 procedure glfwTerminate; cdecl; external GLFW_DLL;
-procedure glfwGetVersion(major, minor, rev: integer);
+procedure glfwGetVersion(var major,  minor,  rev: integer);
   cdecl; external GLFW_DLL;
 function glfwGetVersionString: PChar; cdecl; external GLFW_DLL;
-function glfwGetError(description: PChar): integer; cdecl; external GLFW_DLL;
+function glfwGetError(var description: PChar): integer; cdecl; external GLFW_DLL;
 
 //========================================================================
 //Monitor
@@ -1820,7 +1833,7 @@ function glfwGetTimerValue(): uint64; cdecl; external GLFW_DLL;
  */
 GLFWAPI uint64_t glfwGetTimerFrequency(void);}
 
-function glfwGetTimerFrequency(): uint64;     cdecl; external GLFW_DLL;
+function glfwGetTimerFrequency(): uint64; cdecl; external GLFW_DLL;
 
 //========================================================================
 //Context
