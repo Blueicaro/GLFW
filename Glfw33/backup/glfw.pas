@@ -740,7 +740,7 @@ procedure glfwTerminate; cdecl; external GLFW_DLL;
 
 
 }
-procedure glfwInitHint(hint: integer; Value: integer); cdecl; external GLFW_DLL
+procedure glfwInitHint(hint: integer; Value: integer); cdecl; external GLFW_DLL;
  {
 
  Retrieves the version of the GLFW library.
@@ -1368,7 +1368,7 @@ procedure glfwWindowHint(target: integer; hint: integer); cdecl; external GLFW_D
    since Added in version 3.3.
 
 }
-procedure glfwWindowHintString(hint: integer; Value: PChar);
+procedure glfwWindowHintString(hint: integer; const Value: PChar);
   {
   
 /! brief Creates a window and its associated context.
@@ -4370,4 +4370,4 @@ function glfwSetErrorCallback(cbfun: GLFWerrorfun): pGLFWerrorfun;
 
 implementation
 
-end.
+
