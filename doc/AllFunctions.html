@@ -20,37 +20,187 @@
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwCreateCursor">glfwCreateCursor</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Creates a custom cursor.
+
+<p>Creates a new custom cursor image that can be set for a window with ref glfwSetCursor. The cursor can be destroyed with ref glfwDestroyCursor. Any remaining cursors are destroyed by ref glfwTerminate.
+
+<p>The pixels are 32-bit, little-endian, non-premultiplied RGBA, i.e. eight bits per channel with the red channel first. They are arranged canonically as packed sequential rows, starting from the top-left corner.
+
+<p>The cursor hotspot is specified in pixels, relative to the upper-left corner of the cursor image. Like all other coordinate systems in GLFW, the X-axis points to the right and the Y-axis points down.
+
+<p>param[in] image The desired cursor image. param[in] xhot The desired x-coordinate, in pixels, of the cursor hotspot. param[in] yhot The desired y-coordinate, in pixels, of the cursor hotspot. return The handle of the created cursor, or `NULL` if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_VALUE and ref GLFW_PLATFORM_ERROR.
+
+<p>pointer_lifetime The specified image data is copied before this function returns.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref cursor_object sa ref glfwDestroyCursor sa ref glfwCreateStandardCursor
+
+<p>since Added in version 3.1.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwCreateStandardCursor">glfwCreateStandardCursor</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Version 3.1</p></td>
+<td class="itemdesc"><p>/! brief Creates a cursor with a standard shape.
+
+<p>Returns a cursor with a [standard shape](ref shapes), that can be set for a window with ref glfwSetCursor.
+
+<p>param[in] shape One of the [standard shapes](ref shapes). return A new cursor ready to use or `NULL` if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_ENUM and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref cursor_object sa ref glfwCreateCursor</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwCreateWindow">glfwCreateWindow</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Creates a window and its associated context.
+
+<p>This function creates a window and its associated OpenGL or OpenGL ES context. Most of the options controlling how the window and its context should be created are specified with [window hints](ref window_hints).
+
+<p>Successful creation does not change which context is current. Before you can use the newly created context, you need to [make it current](ref context_current). For information about the `share` parameter, see ref context_sharing.
+
+<p>The created window, framebuffer and context may differ from what you requested, as not all parameters and hints are [hard constraints](ref window_hints_hard). This includes the size of the window, especially for full screen windows. To query the actual attributes of the created window, framebuffer and context, see ref glfwGetWindowAttrib, ref glfwGetWindowSize and ref glfwGetFramebufferSize.
+
+<p>To create a full screen window, you need to specify the monitor the window will cover. If no monitor is specified, the window will be windowed mode. Unless you have a way for the user to choose a specific monitor, it is recommended that you pick the primary monitor. For more information on how to query connected monitors, see ref monitor_monitors.
+
+<p>For full screen windows, the specified size becomes the resolution of the window's _desired video mode_. As long as a full screen window is not iconified, the supported video mode most closely matching the desired video mode is set for the specified monitor. For more information about full screen windows, including the creation of so called _windowed full screen_ or _borderless full screen_ windows, see ref window_windowed_full_screen.
+
+<p>Once you have created the window, you can switch it between windowed and full screen mode with ref glfwSetWindowMonitor. This will not affect its OpenGL or OpenGL ES context.
+
+<p>By default, newly created windows use the placement recommended by the window system. To create the window at a specific position, make it initially invisible using the [GLFW_VISIBLE](ref GLFW_VISIBLE_hint) window hint, set its [position](ref window_pos) and then [show](ref window_hide) it.
+
+<p>As long as at least one full screen window is not iconified, the screensaver is prohibited from starting.
+
+<p>Window systems put limits on window sizes. Very large or very small window dimensions may be overridden by the window system on creation. Check the actual [size](ref window_size) after creation.
+
+<p>The [swap interval](ref buffer_swap) is not set during window creation and the initial value may vary depending on driver settings and defaults.
+
+<p>param[in] width The desired width, in screen coordinates, of the window. This must be greater than zero. param[in] height The desired height, in screen coordinates, of the window. This must be greater than zero. param[in] title The initial, UTF-8 encoded window title. param[in] monitor The monitor to use for full screen mode, or `NULL` for windowed mode. param[in] share The window whose context to share resources with, or `NULL` to not share resources. return The handle of the created window, or `NULL` if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_ENUM, ref GLFW_INVALID_VALUE, ref GLFW_API_UNAVAILABLE, ref GLFW_VERSION_UNAVAILABLE, ref GLFW_FORMAT_UNAVAILABLE and ref GLFW_PLATFORM_ERROR.
+
+<p>remark win32 Window creation will fail if the Microsoft GDI software OpenGL implementation is the only one available.
+
+<p>remark win32 If the executable has an icon resource named `GLFW_ICON,` it will be set as the initial icon for the window. If no such icon is present, the `IDI_APPLICATION` icon will be used instead. To set a different icon, see ref glfwSetWindowIcon.
+
+<p>remark win32 The context to share resources with must not be current on any other thread.
+
+<p>remark macos The OS only supports forward-compatible core profile contexts for OpenGL versions 3.2 and later. Before creating an OpenGL context of version 3.2 or later you must set the [GLFW_OPENGL_FORWARD_COMPAT](ref GLFW_OPENGL_FORWARD_COMPAT_hint) and [GLFW_OPENGL_PROFILE](ref GLFW_OPENGL_PROFILE_hint) hints accordingly. OpenGL 3.0 and 3.1 contexts are not supported at all on macOS.
+
+<p>remark macos The GLFW window has no icon, as it is not a document window, but the dock icon will be the same as the application bundle's icon. For more information on bundles, see the [Bundle Programming Guide](<a href="https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/">https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/</a>) in the Mac Developer Library.
+
+<p>remark macos The first time a window is created the menu bar is created. If GLFW finds a `MainMenu.nib` it is loaded and assumed to contain a menu bar. Otherwise a minimal menu bar is created manually with common commands like Hide, Quit and About. The About entry opens a minimal about dialog with information from the application's bundle. Menu bar creation can be disabled entirely with the ref GLFW_COCOA_MENUBAR init hint.
+
+<p>remark macos On OS X 10.10 and later the window frame will not be rendered at full resolution on Retina displays unless the [GLFW_COCOA_RETINA_FRAMEBUFFER](ref GLFW_COCOA_RETINA_FRAMEBUFFER_hint) hint is `GLFW_TRUE` and the `NSHighResolutionCapable` key is enabled in the application bundle's `Info.plist`. For more information, see [High Resolution Guidelines for OS X](<a href="https://developer.apple.com/library/mac/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Explained/Explained.html">https://developer.apple.com/library/mac/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Explained/Explained.html</a>) in the Mac Developer Library. The GLFW test and example programs use a custom `Info.plist` template for this, which can be found as `CMake/MacOSXBundleInfo.plist.in` in the source tree.
+
+<p>remark macos When activating frame autosaving with [GLFW_COCOA_FRAME_NAME](ref GLFW_COCOA_FRAME_NAME_hint), the specified window size and position may be overridden by previously saved values.
+
+<p>remark x11 Some window managers will not respect the placement of initially hidden windows.
+
+<p>remark x11 Due to the asynchronous nature of X11, it may take a moment for a window to reach its requested state. This means you may not be able to query the final size, position or other attributes directly after window creation.
+
+<p>remark x11 The class part of the `WM_CLASS` window property will by default be set to the window title passed to this function. The instance part will use the contents of the `RESOURCE_NAME` environment variable, if present and not empty, or fall back to the window title. Set the [GLFW_X11_CLASS_NAME](ref GLFW_X11_CLASS_NAME_hint) and [GLFW_X11_INSTANCE_NAME](ref GLFW_X11_INSTANCE_NAME_hint) window hints to override this.
+
+<p>remark wayland Compositors should implement the xdg-decoration protocol for GLFW to decorate the window properly. If this protocol isn't supported, or if the compositor prefers client-side decorations, a very simple fallback frame will be drawn using the wp_viewporter protocol. A compositor can still emit close, maximize or fullscreen events, using for instance a keybind mechanism. If neither of these protocols is supported, the window won't be decorated.
+
+<p>remark wayland A full screen window will not attempt to change the mode, no matter what the requested size or refresh rate.
+
+<p>remark wayland Screensaver inhibition requires the idle-inhibit protocol to be implemented in the user's compositor.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_creation sa ref glfwDestroyWindow
+
+<p>since Added in version 3.0. Replaces `glfwOpenWindow`.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwDefaultWindowHints">glfwDefaultWindowHints</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>======================================================================== Windows (not the SO) ========================================================================</p></td>
+<td class="itemdesc"><p>/! brief Resets all window hints to their default values.
+
+<p>This function resets all window hints to their [default values](ref window_hints_values).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_hints sa ref glfwWindowHint sa ref glfwWindowHintString
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwDestroyCursor">glfwDestroyCursor</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Version 3.1</p></td>
+<td class="itemdesc"><p>/! brief Destroys a cursor.
+
+<p>This function destroys a cursor previously created with ref glfwCreateCursor. Any remaining cursors will be destroyed by ref glfwTerminate.
+
+<p>If the specified cursor is current for any window, that window will be reverted to the default cursor. This does not affect the cursor mode.
+
+<p>param[in] cursor The cursor object to destroy.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>reentrancy This function must not be called from a callback.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref cursor_object sa ref glfwCreateCursor
+
+<p>since Added in version 3.1.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwDestroyWindow">glfwDestroyWindow</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Destroys the specified window and its context.
+
+<p>This function destroys the specified window and its context. On calling this function, no further callbacks will be called for that window.
+
+<p>If the context of the specified window is current on the main thread, it is detached before being destroyed.
+
+<p>param[in] window The window to destroy.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>note The context of the specified window must not be current on any other thread when this function is called.
+
+<p>reentrancy This function must not be called from a callback.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_creation sa ref glfwCreateWindow
+
+<p>since Added in version 3.0. Replaces `glfwCloseWindow`.
+
+<p>ingroup window</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwExtensionSupported">glfwExtensionSupported</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Returns whether the specified extension is available.
+
+<p>This function returns whether the specified [API extension](@ref context_glext) is supported by the current OpenGL or OpenGL ES context. It searches both for client API extension and context creation API extensions.
+
+<p>A context must be current on the calling thread. Calling this function without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
+
+<p>As this functions retrieves and searches one or more extension strings each call, it is recommended that you cache its results if it is going to be used frequently. The extension strings will not change during the lifetime of a context, so there is no danger in doing this.
+
+<p>This function does not apply to Vulkan. If you are using Vulkan, see @ref glfwGetRequiredInstanceExtensions, `vkEnumerateInstanceExtensionProperties` and `vkEnumerateDeviceExtensionProperties` instead.
+
+<p>  otherwise.
+
+<p>@errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref GLFW_NO_CURRENT_CONTEXT, @ref GLFW_INVALID_VALUE and @ref GLFW_PLATFORM_ERROR.
+
+<p>@thread_safety This function may be called from any thread.
+
+<p>@sa @ref context_glext @sa @ref glfwGetProcAddress
+
+<p>@since Added in version 1.0.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwFocusWindow">glfwFocusWindow</a></td>
@@ -77,9 +227,7 @@
 
 <p>sa ref window_focus sa ref window_attention
 
-<p>since Added in version 3.2.
-
-<p>ingroup window / GLFWAPI void glfwFocusWindow(GLFWwindow window);</p></td>
+<p>since Added in version 3.2.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetClipboardString">glfwGetClipboardString</a></td>
@@ -89,12 +237,30 @@
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetCurrentContext">glfwGetCurrentContext</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Returns the window whose context is current on the calling thread. * * This function returns the window whose OpenGL or OpenGL ES context is * current on the calling thread. * *  * context is current. * * @errors Possible errors include @ref GLFW_NOT_INITIALIZED. * * @thread_safety This function may be called from any thread. * * @sa @ref context_current * @sa @ref glfwMakeContextCurrent * * @since Added in version 3.0.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetCursorPos">glfwGetCursorPos</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Retrieves the position of the cursor relative to the content area of the window.
+
+<p>This function returns the position of the cursor, in screen coordinates, relative to the upper-left corner of the content area of the specified window.
+
+<p>If the cursor is disabled (with `GLFW_CURSOR_DISABLED`) then the cursor position is unbounded and limited only by the minimum and maximum values of a `double`.
+
+<p>The coordinate can be converted to their integer equivalents with the `floor` function. Casting directly to an integer type works for positive coordinates, but fails for negative ones.
+
+<p>Any or all of the position arguments may be `NULL`. If an error occurs, all non-`NULL` position arguments will be set to zero.
+
+<p>param[in] window The desired window. param[out] xpos Where to store the cursor x-coordinate, relative to the left edge of the content area, or `NULL`. param[out] ypos Where to store the cursor y-coordinate, relative to the to top edge of the content area, or `NULL`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref cursor_pos sa ref glfwSetCursorPos
+
+<p>since Added in version 3.0. Replaces `glfwGetMousePos`.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetError">glfwGetError</a></td>
@@ -122,12 +288,26 @@
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetFramebufferSize">glfwGetFramebufferSize</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Retrieves the size of the framebuffer of the specified window.
+
+<p>This function retrieves the size, in pixels, of the framebuffer of the specified window. If you wish to retrieve the size of the window in screen coordinates, see ref glfwGetWindowSize.
+
+<p>Any or all of the size arguments may be `NULL`. If an error occurs, all non-`NULL` size arguments will be set to zero.
+
+<p>param[in] window The window whose framebuffer to query. param[out] width Where to store the width, in pixels, of the framebuffer, or `NULL`. param[out] height Where to store the height, in pixels, of the framebuffer, or `NULL`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_fbsize sa ref glfwSetFramebufferSizeCallback
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetGamepadName">glfwGetGamepadName</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>/! brief Returns the human-readable gamepad name for the specified joystick.
+<td class="itemdesc"><p>! brief Returns the human-readable gamepad name for the specified joystick.
 
 <p>This function returns the human-readable name of the gamepad from the gamepad mapping assigned to the specified joystick.
 
@@ -143,12 +323,12 @@
 
 <p>since Added in version 3.3.
 
-<p>ingroup input /</p></td>
+<p>ingroup input</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetGamepadState">glfwGetGamepadState</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>/! brief Retrieves the state of the specified joystick remapped as a gamepad.
+<td class="itemdesc"><p>! brief Retrieves the state of the specified joystick remapped as a gamepad.
 
 <p>This function retrieves the state of the specified joystick remapped to an Xbox-like gamepad.
 
@@ -168,24 +348,53 @@
 
 <p>since Added in version 3.3.
 
-<p>ingroup input /</p></td>
+<p>ingroup input</p></td>
 </tr>
 <tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetGammaRamp">glfwGetGammaRamp</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/! brief Returns the current gamma ramp for the specified monitor.
+
+<p>This function returns the current gamma ramp of the specified monitor.
+
+<p>param[in] monitor The monitor to query. return The current gamma ramp, or `NULL` if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>remark wayland Gamma handling is a privileged protocol, this function will thus never be implemented and emits ref GLFW_PLATFORM_ERROR while returning `NULL`.
+
+<p>pointer_lifetime The returned structure and its arrays are allocated and freed by GLFW. You should not free them yourself. They are valid until the specified monitor is disconnected, this function is called again for that monitor or the library is terminated.
+
+<p>thread_safety This function must only be called from the main thread.</p></td>
+</tr>
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetInputMode">glfwGetInputMode</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Version 3.1 ======================================================================== Input ========================================================================</p></td>
-</tr>
-<tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwGetJoystickAxes">glfwGetJoystickAxes</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Returns the value of an input option for the specified window.
+
+<p>This function returns the value of an input option for the specified window. The mode must be one of ref GLFW_CURSOR, ref GLFW_STICKY_KEYS, ref GLFW_STICKY_MOUSE_BUTTONS, ref GLFW_LOCK_KEY_MODS or ref GLFW_RAW_MOUSE_MOTION.
+
+<p>param[in] window The window to query. param[in] mode One of `GLFW_CURSOR`, `GLFW_STICKY_KEYS`, `GLFW_STICKY_MOUSE_BUTTONS`, `GLFW_LOCK_KEY_MODS` or `GLFW_RAW_MOUSE_MOTION`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_INVALID_ENUM.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref glfwSetInputMode
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list2">
-<td class="itemname"><a class="bold" href="glfw.html#glfwGetJoystickButtons">glfwGetJoystickButtons</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetJoystickAxes">glfwGetJoystickAxes</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Version 3.1</p></td>
+<td class="itemdesc"><p>Returns the values of all axes of the specified joystick. * * This function returns the values of all axes of the specified joystick. * Each element in the array is a value between -1.0 and 1.0. * * If the specified joystick is not present this function will return `NULL` * but will not generate an error. This can be used instead of first calling * @ref glfwJoystickPresent. * *  *  * array. This is set to zero if the joystick is not present or an error * occurred. *  * an [error](@ref error_handling) occurred. * * @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref * GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR. * * @pointer_lifetime The returned array is allocated and freed by GLFW. You * should not free it yourself. It is valid until the specified joystick is * disconnected or the library is terminated. * * @thread_safety This function must only be called from the main thread. * * @sa @ref joystick_axis * * @since Added in version 3.0. Replaces `glfwGetJoystickPos`.</p></td>
 </tr>
 <tr class="list">
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetJoystickButtons">glfwGetJoystickButtons</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>Returns the state of all buttons of the specified joystick. * * This function returns the state of all buttons of the specified joystick. * Each element in the array is either `GLFW_PRESS` or `GLFW_RELEASE`. * * For backward compatibility with earlier versions that did not have @ref * glfwGetJoystickHats, the button array also includes all hats, each * represented as four buttons. The hats are in the same order as returned by * __glfwGetJoystickHats__ and are in the order _up_, _right_, _down_ and * _left_. To disable these extra buttons, set the @ref * GLFW_JOYSTICK_HAT_BUTTONS init hint before initialization. * * If the specified joystick is not present this function will return `NULL` * but will not generate an error. This can be used instead of first calling * @ref glfwJoystickPresent. * *  *  * array. This is set to zero if the joystick is not present or an error * occurred. *  * or an [error](@ref error_handling) occurred. * * @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref * GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR. * * @pointer_lifetime The returned array is allocated and freed by GLFW. You * should not free it yourself. It is valid until the specified joystick is * disconnected or the library is terminated. * * @thread_safety This function must only be called from the main thread. * * @sa @ref joystick_button * * @since Added in version 2.2. * @glfw3 Changed to return a dynamic array.</p></td>
+</tr>
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetJoystickGUID">glfwGetJoystickGUID</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Returns the SDL compatible GUID of the specified joystick.
@@ -212,7 +421,7 @@
 
 <p>ingroup input /</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetJoystickHats">glfwGetJoystickHats</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>brief Returns the state of all hats of the specified joystick.
@@ -239,12 +448,12 @@
 
 <p>ingroup input</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetJoystickName">glfwGetJoystickName</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>&nbsp;</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetJoystickUserPointer">glfwGetJoystickUserPointer</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Returns the user pointer of the specified joystick.
@@ -265,12 +474,32 @@
 
 <p>ingroup input /</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetKey">glfwGetKey</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Returns the last reported state of a keyboard key for the specified window.
+
+<p>This function returns the last state reported for the specified key to the specified window. The returned state is one of `GLFW_PRESS` or `GLFW_RELEASE`. The action `GLFW_REPEAT` is only reported to the key callback.
+
+<p>If the ref GLFW_STICKY_KEYS input mode is enabled, this function returns `GLFW_PRESS` the first time you call it for a key that was pressed, even if that key has already been released.
+
+<p>The key functions deal with physical keys, with [key tokens](ref keys) named after their use on the standard US keyboard layout. If you want to input text, use the Unicode character callback instead.
+
+<p>The [modifier key bit masks](ref mods) are not key tokens and cannot be used with this function.
+
+<p>__Do not use this function__ to implement [text input](ref input_char).
+
+<p>param[in] window The desired window. param[in] key The desired [keyboard key](ref keys). `GLFW_KEY_UNKNOWN` is not a valid key for this function. return One of `GLFW_PRESS` or `GLFW_RELEASE`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_INVALID_ENUM.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref input_key
+
+<p>since Added in version 1.0. glfw3 Added window handle parameter.</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetKeyName">glfwGetKeyName</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Returns the layout-specific name of the specified printable key.
@@ -299,11 +528,9 @@
 
 <p>sa ref input_key_name
 
-<p>since Added in version 3.2.
-
-<p>ingroup input / GLFWAPI const char glfwGetKeyName(int key, int scancode);</p></td>
+<p>since Added in version 3.2.</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetKeyScancode">glfwGetKeyScancode</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Returns the platform-specific scancode of the specified key.
@@ -324,7 +551,7 @@
 
 <p>ingroup input</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitorContentScale">glfwGetMonitorContentScale</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Retrieves the content scale for the specified monitor.
@@ -341,31 +568,89 @@
 
 <p>sa ref monitor_scale sa ref glfwGetWindowContentScale
 
-<p>since Added in version 3.3.
-
-<p>ingroup monitor / GLFWAPI void glfwGetMonitorContentScale(GLFWmonitor monitor, float xscale, float yscale);</p></td>
+<p>since Added in version 3.3. ingroup monitor</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitorName">glfwGetMonitorName</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Returns the name of the specified monitor.
+
+<p>This function returns a human-readable name, encoded as UTF-8, of the specified monitor. The name typically reflects the make and model of the monitor and is not guaranteed to be unique among the connected monitors.
+
+<p>param[in] monitor The monitor to query. return The UTF-8 encoded name of the monitor, or `NULL` if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>pointer_lifetime The returned string is allocated and freed by GLFW. You should not free it yourself. It is valid until the specified monitor is disconnected or the library is terminated.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_properties
+
+<p>since Added in version 3.0.</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitorPhysicalSize">glfwGetMonitorPhysicalSize</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
-</tr>
-<tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitorPos">glfwGetMonitorPos</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Returns the physical size of the monitor.
+
+<p>This function returns the size, in millimetres, of the display area of the specified monitor.
+
+<p>Some systems do not provide accurate monitor size information, either because the monitor [EDID](<a href="https://en.wikipedia.org/wiki/Extended_display_identification_data">https://en.wikipedia.org/wiki/Extended_display_identification_data</a>) data is incorrect or because the driver does not report it accurately.
+
+<p>Any or all of the size arguments may be `NULL`. If an error occurs, all non-`NULL` size arguments will be set to zero.
+
+<p>param[in] monitor The monitor to query. param[out] widthMM Where to store the width, in millimetres, of the monitor's display area, or `NULL`. param[out] heightMM Where to store the height, in millimetres, of the monitor's display area, or `NULL`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>remark win32 On Windows 8 and earlier the physical size is calculated from the current resolution and system DPI instead of querying the monitor EDID data.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_properties
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list2">
-<td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitors">glfwGetMonitors</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitorPos">glfwGetMonitorPos</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>======================================================================== Monitor ========================================================================</p></td>
+<td class="itemdesc"><p>/! brief Returns the position of the monitor's viewport on the virtual screen.
+
+<p>This function returns the position, in screen coordinates, of the upper-left corner of the specified monitor.
+
+<p>Any or all of the position arguments may be `NULL`. If an error occurs, all non-`NULL` position arguments will be set to zero.
+
+<p>param[in] monitor The monitor to query. param[out] xpos Where to store the monitor x-coordinate, or `NULL`. param[out] ypos Where to store the monitor y-coordinate, or `NULL`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_properties
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list">
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitors">glfwGetMonitors</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/! brief Returns the currently connected monitors.
+
+<p>This function returns an array of handles for all currently connected monitors. The primary monitor is always first in the returned array. If no monitors were found, this function returns `NULL`.
+
+<p>param[out] count Where to store the number of monitors in the returned array. This is set to zero if an error occurred. return An array of monitor handles, or `NULL` if no monitors were found or if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>pointer_lifetime The returned array is allocated and freed by GLFW. You should not free it yourself. It is guaranteed to be valid only until the monitor configuration changes or the library is terminated.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_monitors sa ref monitor_event sa ref glfwGetPrimaryMonitor
+
+<p>since Added in version 3.0.</p></td>
+</tr>
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitorUserPointer">glfwGetMonitorUserPointer</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Returns the user pointer of the specified monitor.
@@ -386,7 +671,7 @@
 
 <p>ingroup monitor / GLFWAPI void glfwGetMonitorUserPointer(GLFWmonitor monitor);</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetMonitorWorkarea">glfwGetMonitorWorkarea</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Retrieves the work area of the monitor.
@@ -407,22 +692,72 @@
 
 <p>ingroup monitor / GLFWAPI void glfwGetMonitorWorkarea(GLFWmonitor monitor, int xpos, int ypos, int width, int height);</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetMouseButton">glfwGetMouseButton</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
-</tr>
-<tr class="list2">
-<td class="itemname"><a class="bold" href="glfw.html#glfwGetPrimaryMonitor">glfwGetPrimaryMonitor</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Returns the last reported state of a mouse button for the specified window.
+
+<p>This function returns the last state reported for the specified mouse button to the specified window. The returned state is one of `GLFW_PRESS` or `GLFW_RELEASE`.
+
+<p>If the ref GLFW_STICKY_MOUSE_BUTTONS input mode is enabled, this function returns `GLFW_PRESS` the first time you call it for a mouse button that was pressed, even if that mouse button has already been released.
+
+<p>param[in] window The desired window. param[in] button The desired [mouse button](ref buttons). return One of `GLFW_PRESS` or `GLFW_RELEASE`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_INVALID_ENUM.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref input_mouse_button
+
+<p>since Added in version 1.0. glfw3 Added window handle parameter.</p></td>
 </tr>
 <tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwGetProcAddress">glfwGetProcAddress</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetPrimaryMonitor">glfwGetPrimaryMonitor</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Returns the primary monitor.
+
+<p>This function returns the primary monitor. This is usually the monitor where elements like the task bar or global menu bar are located.
+
+<p>return The primary monitor, or `NULL` if no monitors were found or if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>remark The primary monitor is always first in the array returned by ref glfwGetMonitors.
+
+<p>sa ref monitor_monitors sa ref glfwGetMonitors
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetProcAddress">glfwGetProcAddress</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>Returns the address of the specified function for the current context.
+
+<p>This function returns the address of the specified OpenGL or OpenGL ES [core or extension function](@ref context_glext), if it is supported by the current context.
+
+<p>A context must be current on the calling thread. Calling this function without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
+
+<p>This function does not apply to Vulkan. If you are rendering with Vulkan, see @ref glfwGetInstanceProcAddress, `vkGetInstanceProcAddr` and `vkGetDeviceProcAddr` instead.
+
+<p>@aram[in] procname The ASCII encoded name of the function. return The address of the function, or `NULL` if an [error](@ref error_handling) occurred.
+
+<p>errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref GLFW_NO_CURRENT_CONTEXT and @ref GLFW_PLATFORM_ERROR.
+
+<p>remark The address of a given function is not guaranteed to be the same between contexts.
+
+<p>remark This function may return a non-`NULL` address despite the associated version or extension not being available. Always check the context version or extension string first.
+
+<p>pointer_lifetime The returned function pointer is valid until the context is destroyed or the library is terminated.
+
+<p>thread_safety This function may be called from any thread.
+
+<p>sa @ref context_glext sa @ref glfwExtensionSupported
+
+<p>since Added in version 1.0.</p></td>
+</tr>
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetRequiredInstanceExtensions">glfwGetRequiredInstanceExtensions</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Returns the Vulkan instance extensions required by GLFW.
@@ -449,17 +784,12 @@
 
 <p>since Added in version 3.2.
 
-<p>ingroup vulkan /</p></td>
-</tr>
-<tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwGetTime">glfwGetTime</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>======================================================================== Time ========================================================================</p></td>
+<p>ingroup vulkan</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetTimerFrequency">glfwGetTimerFrequency</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>/! brief Returns the frequency, in Hz, of the raw timer.
+<td class="itemdesc"><p>! brief Returns the frequency, in Hz, of the raw timer.
 
 <p>This function returns the frequency, in Hz, of the raw timer.
 
@@ -471,16 +801,14 @@
 
 <p>sa ref time sa ref glfwGetTimerValue
 
-<p>since Added in version 3.2.
-
-<p>ingroup input /</p></td>
+<p>since Added in version 3.2.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetTimerValue">glfwGetTimerValue</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>/! brief Returns the current value of the raw timer.
+<td class="itemdesc"><p>! brief Returns the current value of the raw timer.
 
-<p>This function returns the current value of the raw timer, measured in 1&amp;nbsp;/&amp;nbsp;frequency seconds. To get the frequency, call ref glfwGetTimerFrequency.
+<p>This function returns the current value of the raw timer, measured in 1&amp;nbsp; &amp;nbsp;frequency seconds. To get the frequency, call ref glfwGetTimerFrequency.
 
 <p>return The value of the timer, or zero if an [error](ref error_handling) occurred.
 
@@ -492,9 +820,26 @@
 
 <p>since Added in version 3.2.
 
-<p>ingroup input /</p></td>
+<p>ingroup input</p></td>
 </tr>
 <tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetVersion">glfwGetVersion</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>Retrieves the version of the GLFW library.
+
+<p>This function retrieves the major, minor and revision numbers of the GLFW library. It is intended for when you are using GLFW as a shared library and want to ensure that you are using the minimum required version.
+
+<p>Any or all of the version arguments may be `NULL`.
+
+<p>param[out] major Where to store the major version number, or `NULL`. param[out] minor Where to store the minor version number, or `NULL`. param[out] rev Where to store the revision number, or `NULL`.
+
+<p>errors None.
+
+<p>remark This function may be called before ref glfwInit.
+
+<p>thread_safety This function may be called from any thread.</p></td>
+</tr>
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetVersionString">glfwGetVersionString</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Returns a string describing the compile-time configuration.
@@ -513,15 +858,70 @@
 
 <p>thread_safety This function may be called from any thread.</p></td>
 </tr>
+<tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwGetVideoMode">glfwGetVideoMode</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/! brief Returns the current mode of the specified monitor.
+
+<p>This function returns the current video mode of the specified monitor. If you have created a full screen window for that monitor, the return value will depend on whether that window is iconified.
+
+<p>param[in] monitor The monitor to query. return The current mode of the monitor, or `NULL` if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>pointer_lifetime The returned array is allocated and freed by GLFW. You should not free it yourself. It is valid until the specified monitor is disconnected or the library is terminated.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_modes sa ref glfwGetVideoModes
+
+<p>since Added in version 3.0. Replaces `glfwGetDesktopMode`.
+
+<p>ingroup monitor /</p></td>
+</tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetVideoModes">glfwGetVideoModes</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Untest ======================================================================== Video Mode ========================================================================</p></td>
+<td class="itemdesc"><p>/! brief Returns the available video modes for the specified monitor.
+
+<p>This function returns an array of all video modes supported by the specified monitor. The returned array is sorted in ascending order, first by color bit depth (the sum of all channel depths), then by resolution area (the product of width and height), then resolution width and finally by refresh rate.
+
+<p>param[in] monitor The monitor to query. param[out] count Where to store the number of video modes in the returned array. This is set to zero if an error occurred. return An array of video modes, or `NULL` if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>pointer_lifetime The returned array is allocated and freed by GLFW. You should not free it yourself. It is valid until the specified monitor is disconnected, this function is called again for that monitor or the library is terminated.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_modes sa ref glfwGetVideoMode
+
+<p>since Added in version 1.0. glfw3 Changed to return an array of modes for a specific monitor.
+
+<p>ingroup monitor /</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetWindowAttrib">glfwGetWindowAttrib</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Returns an attribute of the specified window.
+
+<p>This function returns the value of an attribute of the specified window or its OpenGL or OpenGL ES context.
+
+<p>param[in] window The window to query. param[in] attrib The [window attribute](ref window_attribs) whose value to return. return The value of the attribute, or zero if an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_ENUM and ref GLFW_PLATFORM_ERROR.
+
+<p>remark Framebuffer related hints are not window attributes. See ref window_attribs_fb for more information.
+
+<p>remark Zero is a valid value for many window and context related attributes so you cannot use a return value of zero as an indication of errors. However, this function should not fail as long as it is passed valid arguments and the library has been [initialized](ref intro_init).
+
+<p>remark wayland The Wayland protocol provides no way to check whether a window is iconfied, so ref GLFW_ICONIFIED always returns `GLFW_FALSE`.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_attribs sa ref glfwSetWindowAttrib
+
+<p>since Added in version 3.0. Replaces `glfwGetWindowParam` and `glfwGetGLVersion`.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetWindowContentScale">glfwGetWindowContentScale</a></td>
@@ -540,19 +940,45 @@
 
 <p>sa ref window_scale sa ref glfwSetWindowContentScaleCallback sa ref glfwGetMonitorContentScale
 
-<p>since Added in version 3.3.
-
-<p>ingroup window / GLFWAPI void glfwGetWindowContentScale(GLFWwindow window, float xscale, float yscale);</p></td>
+<p>since Added in version 3.3.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetWindowFrameSize">glfwGetWindowFrameSize</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Retrieves the size of the frame of the window.
+
+<p>This function retrieves the size, in screen coordinates, of each edge of the frame of the specified window. This size includes the title bar, if the window has one. The size of the frame may vary depending on the [window-related hints](ref window_hints_wnd) used to create it.
+
+<p>Because this function retrieves the size of each window frame edge and not the offset along a particular coordinate axis, the retrieved values will always be zero or positive.
+
+<p>Any or all of the size arguments may be `NULL`. If an error occurs, all non-`NULL` size arguments will be set to zero.
+
+<p>param[in] window The window whose frame size to query. param[out] left Where to store the size, in screen coordinates, of the left edge of the window frame, or `NULL`. param[out] top Where to store the size, in screen coordinates, of the top edge of the window frame, or `NULL`. param[out] right Where to store the size, in screen coordinates, of the right edge of the window frame, or `NULL`. param[out] bottom Where to store the size, in screen coordinates, of the bottom edge of the window frame, or `NULL`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_size
+
+<p>since Added in version 3.1.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetWindowMonitor">glfwGetWindowMonitor</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Returns the monitor that the window uses for full screen mode.
+
+<p>This function returns the handle of the monitor that the specified window is in full screen on.
+
+<p>param[in] window The window to query. return The monitor, or `NULL` if the window is in windowed mode or an [error](ref error_handling) occurred.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_monitor sa ref glfwSetWindowMonitor
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetWindowOpacity">glfwGetWindowOpacity</a></td>
@@ -573,9 +999,7 @@
 
 <p>sa ref window_transparency sa ref glfwSetWindowOpacity
 
-<p>since Added in version 3.3.
-
-<p>ingroup window / GLFWAPI float glfwGetWindowOpacity(GLFWwindow window);</p></td>
+<p>since Added in version 3.3.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetWindowPos">glfwGetWindowPos</a></td>
@@ -585,22 +1009,74 @@
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetWindowSize">glfwGetWindowSize</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Retrieves the size of the content area of the specified window.
+
+<p>This function retrieves the size, in screen coordinates, of the content area of the specified window. If you wish to retrieve the size of the framebuffer of the window in pixels, see ref glfwGetFramebufferSize.
+
+<p>Any or all of the size arguments may be `NULL`. If an error occurs, all non-`NULL` size arguments will be set to zero.
+
+<p>param[in] window The window whose size to retrieve. param[out] width Where to store the width, in screen coordinates, of the content area, or `NULL`. param[out] height Where to store the height, in screen coordinates, of the content area, or `NULL`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_size sa ref glfwSetWindowSize
+
+<p>since Added in version 1.0. glfw3 Added window handle parameter.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwGetWindowUserPointer">glfwGetWindowUserPointer</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Returns the user pointer of the specified window.
+
+<p>This function returns the current value of the user-defined pointer of the specified window. The initial value is `NULL`.
+
+<p>param[in] window The window whose pointer to return.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function may be called from any thread. Access is not synchronized.
+
+<p>sa ref window_userptr sa ref glfwSetWindowUserPointer
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwHideWindow">glfwHideWindow</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Hides the specified window.
+
+<p>This function hides the specified window if it was previously visible. If the window is already hidden or is in full screen mode, this function does nothing.
+
+<p>param[in] window The window to hide.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_hide sa ref glfwShowWindow
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwIconifyWindow">glfwIconifyWindow</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Iconifies the specified window.
+
+<p>This function iconifies (minimizes) the specified window if it was previously restored. If the window is already iconified, this function does nothing.
+
+<p>If the specified window is a full screen window, GLFW restores the original video mode of the monitor. The window's desired video mode is set again when the window is restored.
+
+<p>param[in] window The window to iconify.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_iconify sa ref glfwRestoreWindow sa ref glfwMaximizeWindow
+
+<p>since Added in version 2.1. glfw3 Added window handle parameter.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwInit">glfwInit</a></td>
@@ -663,29 +1139,76 @@
 
 <p>since Added in version 3.3.
 
-<p>ingroup input /</p></td>
+<p>ingroup input</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwJoystickPresent">glfwJoystickPresent</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Returns whether the specified joystick is present. * * This function returns whether the specified joystick is present. * * There is no need to call this function before other functions that accept * a joystick ID, as they all check for presence before performing any other * work. * *  *  * * @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref * GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR. * * @thread_safety This function must only be called from the main thread. * * @sa @ref joystick * * @since Added in version 3.0. Replaces `glfwGetJoystickParam`.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwMakeContextCurrent">glfwMakeContextCurrent</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Makes the context of the specified window current for the calling * thread. * * This function makes the OpenGL or OpenGL ES context of the specified window * current on the calling thread. A context must only be made current on * a single thread at a time and each thread can have only a single current * context at a time. * * When moving a context between threads, you must make it non-current on the * old thread before making it current on the new one. * * By default, making a context non-current implicitly forces a pipeline flush. * On machines that support `GL_KHR_context_flush_control`, you can control * whether a context performs this flush by setting the * [GLFW_CONTEXT_RELEASE_BEHAVIOR](@ref GLFW_CONTEXT_RELEASE_BEHAVIOR_hint) * hint. * * The specified window must have an OpenGL or OpenGL ES context. Specifying * a window without a context will generate a @ref GLFW_NO_WINDOW_CONTEXT * error. * *  * detach the current context. * * @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref * GLFW_NO_WINDOW_CONTEXT and @ref GLFW_PLATFORM_ERROR. * * @thread_safety This function may be called from any thread. * * @sa @ref context_current * @sa @ref glfwGetCurrentContext * * @since Added in version 3.0.</p></td>
 </tr>
 <tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwPollEvents">glfwPollEvents</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwMaximizeWindow">glfwMaximizeWindow</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Maximizes the specified window.
+
+<p>This function maximizes the specified window if it was previously not maximized. If the window is already maximized, this function does nothing.
+
+<p>If the specified window is a full screen window, this function does nothing.
+
+<p>param[in] window The window to maximize.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>par Thread Safety This function may only be called from the main thread.
+
+<p>sa ref window_iconify sa ref glfwIconifyWindow sa ref glfwRestoreWindow
+
+<p>since Added in GLFW 3.2.</p></td>
 </tr>
 <tr class="list2">
-<td class="itemname"><a class="bold" href="glfw.html#glfwPostEmptyEvent">glfwPostEmptyEvent</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwPollEvents">glfwPollEvents</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Processes all pending events.
+
+<p>This function processes only those events that are already in the event queue and then returns immediately. Processing events will cause the window and input callbacks associated with those events to be called.
+
+<p>On some platforms, a window move, resize or menu operation will cause event processing to block. This is due to how event processing is designed on those platforms. You can use the [window refresh callback](ref window_refresh) to redraw the contents of your window when necessary during such operations.
+
+<p>Do not assume that callbacks you set will _only_ be called in response to event processing functions like this one. While it is necessary to poll for events, window systems that require GLFW to register callbacks of its own can pass events to GLFW in response to many window system function calls. GLFW will pass those events on to the application callbacks before returning.
+
+<p>Event processing is not required for joystick input to work.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>reentrancy This function must not be called from a callback.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref events sa ref glfwWaitEvents sa ref glfwWaitEventsTimeout
+
+<p>since Added in version 1.0.</p></td>
 </tr>
 <tr class="list">
+<td class="itemname"><a class="bold" href="glfw.html#glfwPostEmptyEvent">glfwPostEmptyEvent</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>Posts an empty event to the event queue.
+
+<p>This function posts an empty event from the current thread to the event queue, causing ref glfwWaitEvents or ref glfwWaitEventsTimeout to return.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function may be called from any thread.
+
+<p>sa ref events sa ref glfwWaitEvents sa ref glfwWaitEventsTimeout
+
+<p>since Added in version 3.1.</p></td>
+</tr>
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwRawMouseMotionSupported">glfwRawMouseMotionSupported</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Returns whether raw mouse motion is supported.
@@ -702,11 +1225,9 @@
 
 <p>sa ref raw_mouse_motion sa ref glfwSetInputMode
 
-<p>since Added in version 3.3.
-
-<p>ingroup input / GLFWAPI int glfwRawMouseMotionSupported(void);</p></td>
+<p>since Added in version 3.3.</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwRequestWindowAttention">glfwRequestWindowAttention</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Requests user attention to the specified window.
@@ -725,81 +1246,291 @@
 
 <p>sa ref window_attention
 
-<p>since Added in version 3.3.
-
-<p>ingroup window / GLFWAPI void glfwRequestWindowAttention(GLFWwindow window);</p></td>
+<p>since Added in version 3.3.</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwRestoreWindow">glfwRestoreWindow</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
-</tr>
-<tr class="list2">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetCharCallback">glfwSetCharCallback</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Restores the specified window.
+
+<p>This function restores the specified window if it was previously iconified (minimized) or maximized. If the window is already restored, this function does nothing.
+
+<p>If the specified window is an iconified full screen window, its desired video mode is set again for its monitor when the window is restored.
+
+<p>param[in] window The window to restore.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_iconify sa ref glfwIconifyWindow sa ref glfwMaximizeWindow
+
+<p>since Added in version 2.1. glfw3 Added window handle parameter.</p></td>
 </tr>
 <tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetCharModsCallback">glfwSetCharModsCallback</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetCharCallback">glfwSetCharCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the Unicode character callback.
+
+<p>This function sets the character callback of the specified window, which is called when a Unicode character is input.
+
+<p>The character callback is intended for Unicode text input. As it deals with characters, it is keyboard layout dependent, whereas the [key callback](ref glfwSetKeyCallback) is not. Characters do not map 1:1 to physical keys, as a key may produce zero, one or more characters. If you want to know whether a specific physical key was pressed or released, see the key callback instead.
+
+<p>The character callback behaves as system text input normally does and will not be called if modifier keys are held down that would prevent normal text input on that platform, for example a Super (Command) key on macOS or Alt key on Windows.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, unsigned int codepoint) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWcharfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref input_char
+
+<p>since Added in version 2.4.</p></td>
 </tr>
 <tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetCharModsCallback">glfwSetCharModsCallback</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/! brief Sets the Unicode character with modifiers callback.
+
+<p>This function sets the character with modifiers callback of the specified window, which is called when a Unicode character is input regardless of what modifier keys are used.
+
+<p>The character with modifiers callback is intended for implementing custom Unicode character input. For regular Unicode text input, see the [character callback](ref glfwSetCharCallback). Like the character callback, the character with modifiers callback deals with characters and is keyboard layout dependent. Characters do not map 1:1 to physical keys, as a key may produce zero, one or more characters. If you want to know whether a specific physical key was pressed or released, see the [key callback](ref glfwSetKeyCallback) instead.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or an [error](ref error_handling) occurred.
+
+<p>callback_signature code void function_name(GLFWwindow window, unsigned int codepoint, int mods) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWcharmodsfun).
+
+<p>deprecated Scheduled for removal in version 4.0.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref input_char
+
+<p>since Added in version 3.1.</p></td>
+</tr>
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetClipboardString">glfwSetClipboardString</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>======================================================================== clipboard ========================================================================</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetCursor">glfwSetCursor</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Version 3.1</p></td>
+<td class="itemdesc"><p>/! brief Sets the cursor for the window.
+
+<p>This function sets the cursor image to be used when the cursor is over the content area of the specified window. The set cursor will only be visible when the [cursor mode](ref cursor_mode) of the window is `GLFW_CURSOR_NORMAL`.
+
+<p>On some platforms, the set cursor may not be visible unless the window also has input focus.
+
+<p>param[in] window The window to set the cursor for. param[in] cursor The cursor to set, or `NULL` to switch back to the default arrow cursor.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref cursor_object
+
+<p>since Added in version 3.1.</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetCursorEnterCallback">glfwSetCursorEnterCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the cursor enter/leave callback.
+
+<p>This function sets the cursor boundary crossing callback of the specified window, which is called when the cursor enters or leaves the content area of the window.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, int entered) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWcursorenterfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref cursor_enter
+
+<p>since Added in version 3.0.</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetCursorPos">glfwSetCursorPos</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the position of the cursor, relative to the content area of the window.
+
+<p>This function sets the position, in screen coordinates, of the cursor relative to the upper-left corner of the content area of the specified window. The window must have input focus. If the window does not have input focus when this function is called, it fails silently.
+
+<p>__Do not use this function__ to implement things like camera controls. GLFW already provides the `GLFW_CURSOR_DISABLED` cursor mode that hides the cursor, transparently re-centers it and provides unconstrained cursor motion. See ref glfwSetInputMode for more information.
+
+<p>If the cursor mode is `GLFW_CURSOR_DISABLED` then the cursor position is unconstrained and limited only by the minimum and maximum values of a `double`.
+
+<p>param[in] window The desired window. param[in] xpos The desired x-coordinate, relative to the left edge of the content area. param[in] ypos The desired y-coordinate, relative to the top edge of the content area.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>remark wayland This function will only work when the cursor mode is `GLFW_CURSOR_DISABLED`, otherwise it will do nothing.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref cursor_pos sa ref glfwGetCursorPos
+
+<p>since Added in version 3.0. Replaces `glfwSetMousePos`.
+
+<p>ingroup input /</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetCursorPosCallback">glfwSetCursorPosCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the cursor position callback.
+
+<p>This function sets the cursor position callback of the specified window, which is called when the cursor is moved. The callback is provided with the position, in screen coordinates, relative to the upper-left corner of the content area of the window.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, double xpos, double ypos); endcode For more information about the callback parameters, see the [function pointer type](ref GLFWcursorposfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref cursor_pos
+
+<p>since Added in version 3.0. Replaces `glfwSetMousePosCallback`.</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetDropCallback">glfwSetDropCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Sets the path drop callback. * * This function sets the path drop callback of the specified window, which is * called when one or more dragged paths are dropped on the window. * * Because the path array and its strings may have been generated specifically * for that event, they are not guaranteed to be valid after the callback has * returned. If you wish to use them after the callback returns, you need to * make a deep copy. * *  *  * currently set callback. *  * library had not been [initialized](@ref intro_init). * * @callback_signature * <code></code> * void function_name(GLFWwindow* window, int path_count, const char* paths[]) * @endcode * For more information about the callback parameters, see the * [function pointer type](@ref GLFWdropfun). * * @errors Possible errors include @ref GLFW_NOT_INITIALIZED. * * @remark @wayland File drop is currently unimplemented. * * @thread_safety This function must only be called from the main thread. * * @sa @ref path_drop * * @since Added in version 3.1.</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetErrorCallback">glfwSetErrorCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>======================================================================== Error ========================================================================</p></td>
+<td class="itemdesc"><p>Sets the error callback.
+
+<p>This function sets the error callback, which is called with an error code and a human-readable description each time a GLFW error occurs.
+
+<p>The error code is set before the callback is called. Calling ref glfwGetError from the error callback will return the same value as the error code argument.
+
+<p>The error callback is called on the thread where the error occurred. If you are using GLFW from multiple threads, your error callback needs to be written accordingly.
+
+<p>Because the description string may have been generated specifically for that error, it is not guaranteed to be valid after the callback has returned. If you wish to use it after the callback returns, you need to make a copy.
+
+<p>Once set, the error callback remains set even after the library has been terminated.
+
+<p>param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set.
+
+<p>callback_signature code void callback_name(int error_code, const char description) endcode For more information about the callback parameters, see the [callback pointer type](ref GLFWerrorfun).
+
+<p>errors None.
+
+<p>remark This function may be called before ref glfwInit.
+
+<p>thread_safety This function must only be called from the main thread.</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetFramebufferSizeCallback">glfwSetFramebufferSizeCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the framebuffer resize callback for the specified window.
+
+<p>This function sets the framebuffer resize callback of the specified window, which is called when the framebuffer of the specified window is resized.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, int width, int height) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWframebuffersizefun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_fbsize
+
+<p>since Added in version 3.0.
+
+<p>/</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetGamma">glfwSetGamma</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
-</tr>
-<tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetGammaRamp">glfwSetGammaRamp</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>! brief Generates a gamma ramp and sets it for the specified monitor.
+
+<p>This function generates an appropriately sized gamma ramp from the specified exponent and then calls ref glfwSetGammaRamp with it. The value must be a finite number greater than zero.
+
+<p>The software controlled gamma ramp is applied _in addition_ to the hardware gamma correction, which today is usually an approximation of sRGB gamma. This means that setting a perfectly linear ramp, or gamma 1.0, will produce the default (usually sRGB-like) behavior.
+
+<p>For gamma correct rendering with OpenGL or OpenGL ES, see the ref GLFW_SRGB_CAPABLE hint.
+
+<p>param[in] monitor The monitor whose gamma ramp to set. param[in] gamma The desired exponent.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_VALUE and ref GLFW_PLATFORM_ERROR.
+
+<p>remark wayland Gamma handling is a privileged protocol, this function will thus never be implemented and emits ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_gamma
+
+<p>since Added in version 3.0</p></td>
 </tr>
 <tr class="list2">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetInputMode">glfwSetInputMode</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetGammaRamp">glfwSetGammaRamp</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>! brief Sets the current gamma ramp for the specified monitor.
+
+<p>This function sets the current gamma ramp for the specified monitor. The original gamma ramp for that monitor is saved by GLFW the first time this function is called and is restored by ref glfwTerminate.
+
+<p>The software controlled gamma ramp is applied _in addition_ to the hardware gamma correction, which today is usually an approximation of sRGB gamma. This means that setting a perfectly linear ramp, or gamma 1.0, will produce the default (usually sRGB-like) behavior.
+
+<p>For gamma correct rendering with OpenGL or OpenGL ES, see the ref GLFW_SRGB_CAPABLE hint.
+
+<p>param[in] monitor The monitor whose gamma ramp to set. param[in] ramp The gamma ramp to use.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>remark The size of the specified gamma ramp should match the size of the current ramp for that monitor.
+
+<p>remark win32 The gamma ramp size must be 256.
+
+<p>remark wayland Gamma handling is a privileged protocol, this function will thus never be implemented and emits ref GLFW_PLATFORM_ERROR.
+
+<p>pointer_lifetime The specified gamma ramp is copied before this function returns.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_gamma
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list">
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetInputMode">glfwSetInputMode</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/! brief Sets an input option for the specified window.
+
+<p>This function sets an input mode option for the specified window. The mode must be one of ref GLFW_CURSOR, ref GLFW_STICKY_KEYS, ref GLFW_STICKY_MOUSE_BUTTONS, ref GLFW_LOCK_KEY_MODS or ref GLFW_RAW_MOUSE_MOTION.
+
+<p>If the mode is `GLFW_CURSOR`, the value must be one of the following cursor modes: - `GLFW_CURSOR_NORMAL` makes the cursor visible and behaving normally. - `GLFW_CURSOR_HIDDEN` makes the cursor invisible when it is over the content area of the window but does not restrict the cursor from leaving. - `GLFW_CURSOR_DISABLED` hides and grabs the cursor, providing virtual and unlimited cursor movement. This is useful for implementing for example 3D camera controls.
+
+<p>If the mode is `GLFW_STICKY_KEYS`, the value must be either `GLFW_TRUE` to enable sticky keys, or `GLFW_FALSE` to disable it. If sticky keys are enabled, a key press will ensure that ref glfwGetKey returns `GLFW_PRESS` the next time it is called even if the key had been released before the call. This is useful when you are only interested in whether keys have been pressed but not when or in which order.
+
+<p>If the mode is `GLFW_STICKY_MOUSE_BUTTONS`, the value must be either `GLFW_TRUE` to enable sticky mouse buttons, or `GLFW_FALSE` to disable it. If sticky mouse buttons are enabled, a mouse button press will ensure that ref glfwGetMouseButton returns `GLFW_PRESS` the next time it is called even if the mouse button had been released before the call. This is useful when you are only interested in whether mouse buttons have been pressed but not when or in which order.
+
+<p>If the mode is `GLFW_LOCK_KEY_MODS`, the value must be either `GLFW_TRUE` to enable lock key modifier bits, or `GLFW_FALSE` to disable them. If enabled, callbacks that receive modifier bits will also have the ref GLFW_MOD_CAPS_LOCK bit set when the event was generated with Caps Lock on, and the ref GLFW_MOD_NUM_LOCK bit when Num Lock was on.
+
+<p>If the mode is `GLFW_RAW_MOUSE_MOTION`, the value must be either `GLFW_TRUE` to enable raw (unscaled and unaccelerated) mouse motion when the cursor is disabled, or `GLFW_FALSE` to disable it. If raw motion is not supported, attempting to set this will emit ref GLFW_PLATFORM_ERROR. Call ref glfwRawMouseMotionSupported to check for support.
+
+<p>param[in] window The window whose input mode to set. param[in] mode One of `GLFW_CURSOR`, `GLFW_STICKY_KEYS`, `GLFW_STICKY_MOUSE_BUTTONS`, `GLFW_LOCK_KEY_MODS` or `GLFW_RAW_MOUSE_MOTION`. param[in] value The new value of the specified input mode.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_ENUM and ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref glfwGetInputMode
+
+<p>since Added in version 3.0. Replaces `glfwEnable` and `glfwDisable`.</p></td>
+</tr>
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetJoystickCallback">glfwSetJoystickCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Sets the joystick configuration callback.
@@ -824,9 +1555,9 @@
 
 <p>since Added in version 3.2.
 
-<p>ingroup input /</p></td>
+<p>ingroup input</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetJoystickUserPointer">glfwSetJoystickUserPointer</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Sets the user pointer of the specified joystick.
@@ -847,17 +1578,53 @@
 
 <p>ingroup input /</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetKeyCallback">glfwSetKeyCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Version 3.1</p></td>
-</tr>
-<tr class="list2">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetMonitorCallback">glfwSetMonitorCallback</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the key callback.
+
+<p>This function sets the key callback of the specified window, which is called when a key is pressed, repeated or released.
+
+<p>The key functions deal with physical keys, with layout independent [key tokens](ref keys) named after their values in the standard US keyboard layout. If you want to input text, use the [character callback](ref glfwSetCharCallback) instead.
+
+<p>When a window loses input focus, it will generate synthetic key release events for all pressed keys. You can tell these events from user-generated events by the fact that the synthetic ones are generated after the focus loss event has been processed, i.e. after the [window focus callback](ref glfwSetWindowFocusCallback) has been called.
+
+<p>The scancode of a key is specific to that platform or sometimes even to that machine. Scancodes are intended to allow users to bind keys that don't have a GLFW key token. Such keys have `key` set to `GLFW_KEY_UNKNOWN`, their state is not saved and so it cannot be queried with ref glfwGetKey.
+
+<p>Sometimes GLFW needs to generate synthetic key events, in which case the scancode may be zero.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new key callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, int key, int scancode, int action, int mods) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWkeyfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref input_key
+
+<p>since Added in version 1.0. glfw3 Added window handle parameter and return value.</p></td>
 </tr>
 <tr class="list">
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetMonitorCallback">glfwSetMonitorCallback</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/! brief Sets the monitor configuration callback.
+
+<p>This function sets the monitor configuration callback, or removes the currently set callback. This is called when a monitor is connected to or disconnected from the system.
+
+<p>param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWmonitor monitor, int event) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWmonitorfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref monitor_event
+
+<p>since Added in version 3.0.</p></td>
+</tr>
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetMonitorUserPointer">glfwSetMonitorUserPointer</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Sets the user pointer of the specified monitor.
@@ -878,20 +1645,79 @@
 
 <p>ingroup monitor / GLFWAPI void glfwSetMonitorUserPointer(GLFWmonitor monitor, void pointer);</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetMouseButtonCallback">glfwSetMouseButtonCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Version 3.1</p></td>
-</tr>
-<tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetScrollCallback">glfwSetScrollCallback</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the mouse button callback.
+
+<p>This function sets the mouse button callback of the specified window, which is called when a mouse button is pressed or released.
+
+<p>When a window loses input focus, it will generate synthetic mouse button release events for all pressed mouse buttons. You can tell these events from user-generated events by the fact that the synthetic ones are generated after the focus loss event has been processed, i.e. after the [window focus callback](ref glfwSetWindowFocusCallback) has been called.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, int button, int action, int mods) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWmousebuttonfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref input_mouse_button
+
+<p>since Added in version 1.0. glfw3 Added window handle parameter and return value.</p></td>
 </tr>
 <tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetScrollCallback">glfwSetScrollCallback</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/! brief Sets the scroll callback.
+
+<p>This function sets the scroll callback of the specified window, which is called when a scrolling device is used, such as a mouse wheel or scrolling area of a touchpad.
+
+<p>The scroll callback receives all scrolling input, like that from a mouse wheel or a touchpad scrolling area.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new scroll callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, double xoffset, double yoffset) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWscrollfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref scrolling
+
+<p>since Added in version 3.0. Replaces `glfwSetMouseWheelCallback`.</p></td>
+</tr>
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetTime">glfwSetTime</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Time ========================================================================</p></td>
+</tr>
+<tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowAspectRatio">glfwSetWindowAspectRatio</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>Sets the aspect ratio of the specified window.
+
+<p>This function sets the required aspect ratio of the content area of the specified window. If the window is full screen, the aspect ratio only takes effect once it is made windowed. If the window is not resizable, this function does nothing.
+
+<p>The aspect ratio is specified as a numerator and a denominator and both values must be greater than zero. For example, the common 16:9 aspect ratio is specified as 16 and 9, respectively.
+
+<p>If the numerator and denominator is set to `GLFW_DONT_CARE` then the aspect ratio limit is disabled.
+
+<p>The aspect ratio is applied immediately to a windowed mode window and may cause it to be resized.
+
+<p>param[in] window The window to set limits for. param[in] numer The numerator of the desired aspect ratio, or `GLFW_DONT_CARE`. param[in] denom The denominator of the desired aspect ratio, or `GLFW_DONT_CARE`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_VALUE and ref GLFW_PLATFORM_ERROR.
+
+<p>remark If you set size limits and an aspect ratio that conflict, the results are undefined.
+
+<p>remark wayland The aspect ratio will not be applied until the window is actually resized, either by the user or by the compositor.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_sizelimits sa ref glfwSetWindowSizeLimits
+
+<p>since Added in version 3.2.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowAttrib">glfwSetWindowAttrib</a></td>
@@ -918,12 +1744,32 @@
 
 <p>since Added in version 3.3.
 
-<p>ingroup window / GLFWAPI void glfwSetWindowAttrib(GLFWwindow window, int attrib, int value);</p></td>
+<p>ingroup window</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowCloseCallback">glfwSetWindowCloseCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the close callback for the specified window.
+
+<p>This function sets the close callback of the specified window, which is called when the user attempts to close the window, for example by clicking the close widget in the title bar.
+
+<p>The close flag is set before this callback is called, but you can modify it at any time with ref glfwSetWindowShouldClose.
+
+<p>The close callback is not triggered by ref glfwDestroyWindow.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWwindowclosefun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>remark macos Selecting Quit from the application menu will trigger the close callback for all windows.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_close
+
+<p>since Added in version 2.5. glfw3 Added window handle parameter and return value.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowContentScaleCallback">glfwSetWindowContentScaleCallback</a></td>
@@ -946,19 +1792,76 @@
 
 <p>since Added in version 3.3.
 
-<p>ingroup window / GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow window, GLFWwindowcontentscalefun callback);</p></td>
+<p>ingroup window</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowFocusCallback">glfwSetWindowFocusCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the focus callback for the specified window.
+
+<p>This function sets the focus callback of the specified window, which is called when the window gains or loses input focus.
+
+<p>After the focus callback is called for a window that lost input focus, synthetic key and mouse button release events will be generated for all such that had been pressed. For more information, see ref glfwSetKeyCallback and ref glfwSetMouseButtonCallback.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, int focused) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWwindowfocusfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_focus
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowIconifyCallback">glfwSetWindowIconifyCallback</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowIcon">glfwSetWindowIcon</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Sets the icon for the specified window.
+
+<p>This function sets the icon of the specified window. If passed an array of candidate images, those of or closest to the sizes desired by the system are selected. If no images are specified, the window reverts to its default icon.
+
+<p>The pixels are 32-bit, little-endian, non-premultiplied RGBA, i.e. eight bits per channel with the red channel first. They are arranged canonically as packed sequential rows, starting from the top-left corner.
+
+<p>The desired image sizes varies depending on platform and system settings. The selected images will be rescaled as needed. Good sizes include 16x16, 32x32 and 48x48.
+
+<p>param[in] window The window whose icon to set. param[in] count The number of images in the specified array, or zero to revert to the default window icon. param[in] images The images to create the icon from. This is ignored if count is zero.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_VALUE and ref GLFW_PLATFORM_ERROR.
+
+<p>pointer_lifetime The specified image data is copied before this function returns.
+
+<p>remark macos The GLFW window has no icon, as it is not a document window, so this function does nothing. The dock icon will be the same as the application bundle's icon. For more information on bundles, see the [Bundle Programming Guide](<a href="https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/">https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/</a>) in the Mac Developer Library.
+
+<p>remark wayland There is no existing protocol to change an icon, the window will thus inherit the one defined in the application's desktop file. This function always emits ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_icon
+
+<p>since Added in version 3.2.</p></td>
 </tr>
 <tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowIconifyCallback">glfwSetWindowIconifyCallback</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/! brief Sets the iconify callback for the specified window.
+
+<p>This function sets the iconification callback of the specified window, which is called when the window is iconified or restored.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, int iconified) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWwindowiconifyfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>remark wayland The XDG-shell protocol has no event for iconification, so this callback will never be called.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_iconify</p></td>
+</tr>
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowMaximizeCallback">glfwSetWindowMaximizeCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Sets the maximize callback for the specified window.
@@ -979,9 +1882,9 @@
 
 <p>since Added in version 3.3.
 
-<p>ingroup window / GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow window, GLFWwindowmaximizefun callback);</p></td>
+<p>//</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowMonitor">glfwSetWindowMonitor</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Sets the mode, monitor, video mode and placement of a window.
@@ -1010,11 +1913,9 @@
 
 <p>sa ref window_monitor sa ref window_full_screen sa ref glfwGetWindowMonitor sa ref glfwSetWindowSize
 
-<p>since Added in version 3.2.
-
-<p>ingroup window / GLFWAPI void glfwSetWindowMonitor(GLFWwindow window, GLFWmonitor monitor, int xpos, int ypos, int width, int height, int refreshRate);</p></td>
+<p>since Added in version 3.2.</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowOpacity">glfwSetWindowOpacity</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
 <td class="itemdesc"><p>Sets the opacity of the whole window.
@@ -1035,64 +1936,243 @@
 
 <p>sa ref window_transparency sa ref glfwGetWindowOpacity
 
-<p>since Added in version 3.3.
-
-<p>ingroup window / GLFWAPI void glfwSetWindowOpacity(GLFWwindow window, float opacity);</p></td>
+<p>since Added in version 3.3.</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowPos">glfwSetWindowPos</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Sets the position of the content area of the specified window.
+
+<p>This function sets the position, in screen coordinates, of the upper-left corner of the content area of the specified windowed mode window. If the window is a full screen window, this function does nothing.
+
+<p>__Do not use this function__ to move an already visible window unless you have very good reasons for doing so, as it will confuse and annoy the user.
+
+<p>The window manager may put limits on what positions are allowed. GLFW cannot and should not override these limits.
+
+<p>param[in] window The window to query. param[in] xpos The x-coordinate of the upper-left corner of the content area. param[in] ypos The y-coordinate of the upper-left corner of the content area.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>remark wayland There is no way for an application to set the global position of its windows, this function will always emit ref GLFW_PLATFORM_ERROR.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_pos sa ref glfwGetWindowPos
+
+<p>since Added in version 1.0. glfw3 Added window handle parameter.</p></td>
 </tr>
-<tr class="list2">
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowPosCallback">glfwSetWindowPosCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the position callback for the specified window.
+
+<p>This function sets the position callback of the specified window, which is called when the window is moved. The callback is provided with the position, in screen coordinates, of the upper-left corner of the content area of the window.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, int xpos, int ypos) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWwindowposfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>remark wayland This callback will never be called, as there is no way for an application to know its global position.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_pos</p></td>
 </tr>
-<tr class="list">
+<tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowRefreshCallback">glfwSetWindowRefreshCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
-</tr>
-<tr class="list2">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowShouldClose">glfwSetWindowShouldClose</a></td>
-<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the refresh callback for the specified window.
+
+<p>This function sets the refresh callback of the specified window, which is called when the content area of the window needs to be redrawn, for example if the window has been exposed after having been covered by another window.
+
+<p>On compositing window systems such as Aero, Compiz, Aqua or Wayland, where the window contents are saved off-screen, this callback may be called only very infrequently or never at all.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window); endcode For more information about the callback parameters, see the [function pointer type](ref GLFWwindowrefreshfun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_refresh
+
+<p>since Added in version 2.5. glfw3 Added window handle parameter and return value.</p></td>
 </tr>
 <tr class="list">
-<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowSize">glfwSetWindowSize</a></td>
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowShouldClose">glfwSetWindowShouldClose</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Sets the close flag of the specified window.
+
+<p>This function sets the value of the close flag of the specified window. This can be used to override the user's attempt to close the window, or to signal that it should be closed.
+
+<p>param[in] window The window whose flag to change. param[in] value The new value.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function may be called from any thread. Access is not synchronized.
+
+<p>sa ref window_close
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowSize">glfwSetWindowSize</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>/*! @brief Sets the size of the content area of the specified window. * * This function sets the size, in screen coordinates, of the content area of * the specified window. * * For full screen windows, this function updates the resolution of its desired * video mode and switches to the video mode closest to it, without affecting * the window's context. As the context is unaffected, the bit depths of the * framebuffer remain unchanged. * * If you wish to update the refresh rate of the desired video mode in addition * to its resolution, see @ref glfwSetWindowMonitor. * * The window manager may put limits on what sizes are allowed. GLFW cannot * and should not override these limits. * *  *  * content area. *  * content area. * * @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref * GLFW_PLATFORM_ERROR. * * @remark @wayland A full screen window will not attempt to change the mode, * no matter what the requested size. * * @thread_safety This function must only be called from the main thread. * * @sa @ref window_size * @sa @ref glfwGetWindowSize * @sa @ref glfwSetWindowMonitor * * @since Added in version 1.0. * @glfw3 Added window handle parameter. *</p></td>
+</tr>
+<tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowSizeCallback">glfwSetWindowSizeCallback</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the size callback for the specified window.
+
+<p>This function sets the size callback of the specified window, which is called when the window is resized. The callback is provided with the size, in screen coordinates, of the content area of the window.
+
+<p>param[in] window The window whose callback to set. param[in] callback The new callback, or `NULL` to remove the currently set callback. return The previously set callback, or `NULL` if no callback was set or the library had not been [initialized](ref intro_init).
+
+<p>callback_signature code void function_name(GLFWwindow window, int width, int height) endcode For more information about the callback parameters, see the [function pointer type](ref GLFWwindowsizefun).
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_size
+
+<p>since Added in version 1.0. glfw3 Added window handle parameter and return value.</p></td>
+</tr>
+<tr class="list2">
+<td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowSizeLimits">glfwSetWindowSizeLimits</a></td>
+<td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
+<td class="itemdesc"><p>Sets the size limits of the specified window.
+
+<p>This function sets the size limits of the content area of the specified window. If the window is full screen, the size limits only take effect once it is made windowed. If the window is not resizable, this function does nothing.
+
+<p>The size limits are applied immediately to a windowed mode window and may cause it to be resized.
+
+<p>The maximum dimensions must be greater than or equal to the minimum dimensions and all must be greater than or equal to zero.
+
+<p>param[in] window The window to set limits for. param[in] minwidth The minimum width, in screen coordinates, of the content area, or `GLFW_DONT_CARE`. param[in] minheight The minimum height, in screen coordinates, of the content area, or `GLFW_DONT_CARE`. param[in] maxwidth The maximum width, in screen coordinates, of the content area, or `GLFW_DONT_CARE`. param[in] maxheight The maximum height, in screen coordinates, of the content area, or `GLFW_DONT_CARE`.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED, ref GLFW_INVALID_VALUE and ref GLFW_PLATFORM_ERROR.
+
+<p>remark If you set size limits and an aspect ratio that conflict, the results are undefined.
+
+<p>remark wayland The size limits will not be applied until the window is actually resized, either by the user or by the compositor.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_sizelimits sa ref glfwSetWindowAspectRatio
+
+<p>since Added in version 3.2.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowTitle">glfwSetWindowTitle</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Sets the title of the specified window.
+
+<p>This function sets the window title, encoded as UTF-8, of the specified window.
+
+<p>param[in] window The window whose title to change. param[in] title The UTF-8 encoded window title.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>remark macos The window title will not be updated until the next time you process events.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_title
+
+<p>since Added in version 1.0. glfw3 Added window handle parameter.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSetWindowUserPointer">glfwSetWindowUserPointer</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Sets the user pointer of the specified window.
+
+<p>This function sets the user-defined pointer of the specified window. The current value is retained until the window is destroyed. The initial value is `NULL`.
+
+<p>param[in] window The window whose pointer to set. param[in] pointer The new value.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function may be called from any thread. Access is not synchronized.
+
+<p>sa ref window_userptr sa ref glfwGetWindowUserPointer
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwShowWindow">glfwShowWindow</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Makes the specified window visible.
+
+<p>This function makes the specified window visible if it was previously hidden. If the window is already visible or is in full screen mode, this function does nothing.
+
+<p>By default, windowed mode windows are focused when shown Set the [GLFW_FOCUS_ON_SHOW](ref GLFW_FOCUS_ON_SHOW_hint) window hint to change this behavior for all newly created windows, or change the behavior for an existing window with ref glfwSetWindowAttrib.
+
+<p>param[in] window The window to make visible.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>remark wayland Because Wayland wants every frame of the desktop to be complete, this function does not immediately make the window visible. Instead it will become visible the next time the window framebuffer is updated after this call.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_hide sa ref glfwHideWindow
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSwapBuffers">glfwSwapBuffers</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>======================================================================== Context ========================================================================</p></td>
+<td class="itemdesc"><p>Swaps the front and back buffers of the specified window.
+
+<p>This function swaps the front and back buffers of the specified window when rendering with OpenGL or OpenGL ES. If the swap interval is greater than zero, the GPU driver waits the specified number of screen updates before swapping the buffers.
+
+<p>The specified window must have an OpenGL or OpenGL ES context. Specifying a window without a context will generate a @ref GLFW_NO_WINDOW_CONTEXT error.
+
+<p>This function does not apply to Vulkan. If you are rendering with Vulkan, see `vkQueuePresentKHR` instead.
+
+<p>
+
+<p>@errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref GLFW_NO_WINDOW_CONTEXT and @ref GLFW_PLATFORM_ERROR.
+
+<p>@remark __EGL:__ The context of the specified window must be current on the calling thread.
+
+<p>@thread_safety This function may be called from any thread.
+
+<p>@sa @ref buffer_swap @sa @ref glfwSwapInterval
+
+<p>@since Added in version 1.0. @glfw3 Added window handle parameter.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwSwapInterval">glfwSwapInterval</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Sets the swap interval for the current context.
+
+<p>This function sets the swap interval for the current OpenGL or OpenGL ES context, i.e. the number of screen updates to wait from the time @ref glfwSwapBuffers was called before swapping the buffers and returning. This is sometimes called _vertical synchronization_, _vertical retrace synchronization_ or just _vsync_.
+
+<p>A context that supports either of the `WGL_EXT_swap_control_tear` and `GLX_EXT_swap_control_tear` extensions also accepts _negative_ swap intervals, which allows the driver to swap immediately even if a frame arrives a little bit late. You can check for these extensions with @ref glfwExtensionSupported.
+
+<p>A context must be current on the calling thread. Calling this function without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
+
+<p>This function does not apply to Vulkan. If you are rendering with Vulkan, see the present mode of your swapchain instead.
+
+<p> until the buffers are swapped by @ref glfwSwapBuffers.
+
+<p>@errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref GLFW_NO_CURRENT_CONTEXT and @ref GLFW_PLATFORM_ERROR.
+
+<p>@remark This function is not called during context creation, leaving the swap interval set to whatever is the default on that platform. This is done because some swap interval extensions used by GLFW do not allow the swap interval to be reset to zero once it has been set to a non-zero value.
+
+<p>@remark Some GPU drivers do not honor the requested swap interval, either because of a user setting that overrides the application's request or due to bugs in the driver.
+
+<p>@thread_safety This function may be called from any thread.
+
+<p>@sa @ref buffer_swap @sa @ref glfwSwapBuffers
+
+<p>@since Added in version 1.0.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwTerminate">glfwTerminate</a></td>
@@ -1140,12 +2220,12 @@
 
 <p>since Added in version 3.3.
 
-<p>ingroup input /</p></td>
+<p>ingroup input</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwVulkanSupported">glfwVulkanSupported</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>/! brief Returns whether the Vulkan loader and an ICD have been found.
+<td class="itemdesc"><p>brief Returns whether the Vulkan loader and an ICD have been found.
 
 <p>This function returns whether the Vulkan loader and any minimally functional ICD have been found.
 
@@ -1161,12 +2241,32 @@
 
 <p>since Added in version 3.2.
 
-<p>ingroup vulkan /</p></td>
+<p>ingroup vulkan</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwWaitEvents">glfwWaitEvents</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Waits until events are queued and processes them.
+
+<p>This function puts the calling thread to sleep until at least one event is available in the event queue. Once one or more events are available, it behaves exactly like ref glfwPollEvents, i.e. the events in the queue are processed and the function then returns immediately. Processing events will cause the window and input callbacks associated with those events to be called.
+
+<p>Since not all events are associated with callbacks, this function may return without a callback having been called even if you are monitoring all callbacks.
+
+<p>On some platforms, a window move, resize or menu operation will cause event processing to block. This is due to how event processing is designed on those platforms. You can use the [window refresh callback](ref window_refresh) to redraw the contents of your window when necessary during such operations.
+
+<p>Do not assume that callbacks you set will _only_ be called in response to event processing functions like this one. While it is necessary to poll for events, window systems that require GLFW to register callbacks of its own can pass events to GLFW in response to many window system function calls. GLFW will pass those events on to the application callbacks before returning.
+
+<p>Event processing is not required for joystick input to work.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_PLATFORM_ERROR.
+
+<p>reentrancy This function must not be called from a callback.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref events sa ref glfwPollEvents sa ref glfwWaitEventsTimeout
+
+<p>since Added in version 2.5.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwWaitEventsTimeout">glfwWaitEventsTimeout</a></td>
@@ -1195,19 +2295,35 @@
 
 <p>sa ref events sa ref glfwPollEvents sa ref glfwWaitEvents
 
-<p>since Added in version 3.2.
-
-<p>ingroup window / GLFWAPI void glfwWaitEventsTimeout(double timeout);</p></td>
+<p>since Added in version 3.2.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwWindowHint">glfwWindowHint</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>/! brief Sets the specified window hint to the desired value.
+
+<p>This function sets hints for the next call to ref glfwCreateWindow. The hints, once set, retain their values until changed by a call to this function or ref glfwDefaultWindowHints, or until the library is terminated.
+
+<p>Only integer value hints can be set with this function. String value hints are set with ref glfwWindowHintString.
+
+<p>This function does not check whether the specified hint values are valid. If you set hints to invalid values this will instead be reported by the next call to ref glfwCreateWindow.
+
+<p>Some hints are platform specific. These may be set on any platform but they will only affect their specific platform. Other platforms will ignore them. Setting these hints requires no platform specific headers or functions.
+
+<p>param[in] hint The [window hint](ref window_hints) to set. param[in] value The new value of the window hint.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED and ref GLFW_INVALID_ENUM.
+
+<p>thread_safety This function must only be called from the main thread.
+
+<p>sa ref window_hints sa ref glfwWindowHintString sa ref glfwDefaultWindowHints
+
+<p>since Added in version 3.0. Replaces `glfwOpenWindowHint`.</p></td>
 </tr>
 <tr class="list2">
 <td class="itemname"><a class="bold" href="glfw.html#glfwWindowHintString">glfwWindowHintString</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>Sets the specified window hint to the desired value.
+<td class="itemdesc"><p>/! brief Sets the specified window hint to the desired value.
 
 <p>This function sets hints for the next call to ref glfwCreateWindow. The hints, once set, retain their values until changed by a call to this function or ref glfwDefaultWindowHints, or until the library is terminated.
 
@@ -1227,14 +2343,24 @@
 
 <p>sa ref window_hints sa ref glfwWindowHint sa ref glfwDefaultWindowHints
 
-<p>since Added in version 3.3.
-
-<p>ingroup window / GLFWAPI void glfwWindowHintString(int hint, const char value);</p></td>
+<p>since Added in version 3.3.</p></td>
 </tr>
 <tr class="list">
 <td class="itemname"><a class="bold" href="glfw.html#glfwWindowShouldClose">glfwWindowShouldClose</a></td>
 <td class="itemunit"><a class="bold" href="glfw.html">glfw</a></td>
-<td class="itemdesc"><p>&nbsp;</p></td>
+<td class="itemdesc"><p>Checks the close flag of the specified window.
+
+<p>This function returns the value of the close flag of the specified window.
+
+<p>param[in] window The window to query. return The value of the close flag.
+
+<p>errors Possible errors include ref GLFW_NOT_INITIALIZED.
+
+<p>thread_safety This function may be called from any thread. Access is not synchronized.
+
+<p>sa ref window_close
+
+<p>since Added in version 3.0.</p></td>
 </tr>
 </table>
 <hr><span class="appinfo"><em>Generated by <a href="https://pasdoc.github.io/">PasDoc 0.16.0</a>. </em>

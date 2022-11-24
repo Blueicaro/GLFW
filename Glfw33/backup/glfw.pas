@@ -1369,6 +1369,7 @@ procedure glfwWindowHint(target: integer; hint: integer); cdecl; external GLFW_D
 
 }
 procedure glfwWindowHintString(hint: integer; const Value: PChar);
+  cdecl; external GLFW_DLL;
   {
   
 /! brief Creates a window and its associated context.
@@ -1521,50 +1522,11 @@ procedure glfwWindowHintString(hint: integer; const Value: PChar);
 
    since Added in version 3.0.  Replaces `glfwOpenWindow`.
 
-   ingroup window
   }
 function glfwCreateWindow(Width, Height: integer; title: PChar;
   monitor: pGLFWmonitor; share: pGLFWwindow): pGLFWwindow; cdecl; external GLFW_DLL;
-{ Sets the specified window hint to the desired value.
-
-   This function sets hints for the next call to ref glfwCreateWindow.  The
-   hints, once set, retain their values until changed by a call to this
-   function or ref glfwDefaultWindowHints, or until the library is terminated.
-
-   Only string type hints can be set with this function.  Integer value hints
-   are set with ref glfwWindowHint.
-
-   This function does not check whether the specified hint values are valid.
-   If you set hints to invalid values this will instead be reported by the next
-   call to ref glfwCreateWindow.
-
-   Some hints are platform specific.  These may be set on any platform but they
-   will only affect their specific platform.  Other platforms will ignore them.
-   Setting these hints requires no platform specific headers or functions.
-
-   param[in] hint The [window hint](ref window_hints) to set.
-   param[in] value The new value of the window hint.
-
-   errors Possible errors include ref GLFW_NOT_INITIALIZED and ref
-   GLFW_INVALID_ENUM.
-
-   pointer_lifetime The specified string is copied before this function
-   returns.
-
-   thread_safety This function must only be called from the main thread.
-
-   sa ref window_hints
-   sa ref glfwWindowHint
-   sa ref glfwDefaultWindowHints
-
-   since Added in version 3.3.
-
-   ingroup window
-
-}
-procedure glfwWindowHintString(hint: integer; Value: PChar); cdecl; external GLFW_DLL;
  {
- /! brief Destroys the specified window and its context.
+ Destroys the specified window and its context.
 
    This function destroys the specified window and its context.  On calling
    this function, no further callbacks will be called for that window.
@@ -1590,12 +1552,12 @@ procedure glfwWindowHintString(hint: integer; Value: PChar); cdecl; external GLF
    since Added in version 3.0.  Replaces `glfwCloseWindow`.
 
    ingroup window
- /
+
  }
 procedure glfwDestroyWindow(Window: pGLFWwindow); cdecl; external GLFW_DLL;
 
  {
- /! brief Checks the close flag of the specified window.
+ Checks the close flag of the specified window.
 
    This function returns the value of the close flag of the specified window.
 
@@ -1611,11 +1573,11 @@ procedure glfwDestroyWindow(Window: pGLFWwindow); cdecl; external GLFW_DLL;
 
    since Added in version 3.0.
 
- /
+
  }
 function glfwWindowShouldClose(Window: pGLFWwindow): integer; cdecl; external GLFW_DLL;
  {
- /! brief Sets the close flag of the specified window.
+  Sets the close flag of the specified window.
 
    This function sets the value of the close flag of the specified window.
    This can be used to override the user's attempt to close the window, or
@@ -1636,7 +1598,7 @@ function glfwWindowShouldClose(Window: pGLFWwindow): integer; cdecl; external GL
 procedure glfwSetWindowShouldClose(window: pGLFWwindow; Action: GLFW_INT);
   cdecl; external GLFW_DLL;
  {
- /! brief Sets the title of the specified window.
+ Sets the title of the specified window.
 
    This function sets the window title, encoded as UTF-8, of the specified
    window.
@@ -1660,7 +1622,7 @@ procedure glfwSetWindowShouldClose(window: pGLFWwindow; Action: GLFW_INT);
 procedure glfwSetWindowTitle(window: pGLFWwindow; title: PChar); cdecl;
   external GLFW_DLL;
  {
- /! brief Sets the icon for the specified window.
+ Sets the icon for the specified window.
 
    This function sets the icon of the specified window.  If passed an array of
    candidate images, those of or closest to the sizes desired by the system are
@@ -1704,10 +1666,11 @@ procedure glfwSetWindowTitle(window: pGLFWwindow; title: PChar); cdecl;
    since Added in version 3.2.
 
 }
-procedure glfwSetWindowIcon(window: pGLFWWindow; Count: integer; images: pGLFWimages);
+procedure glfwSetWindowIcon(window: pGLFWWindow; Count: integer; images: pGLFWimage);
+  cdecl; external GLFW_DLL;
  {
  
-/! brief Sets the position of the content area of the specified window.
+ Sets the position of the content area of the specified window.
 
    This function sets the position, in screen coordinates, of the upper-left
    corner of the content area of the specified windowed mode window.  If the
@@ -1741,7 +1704,7 @@ procedure glfwSetWindowIcon(window: pGLFWWindow; Count: integer; images: pGLFWim
 procedure glfwSetWindowPos(window: pGLFWwindow; xpos, ypos: integer);
   cdecl; external GLFW_DLL;
 {
-/! brief Retrieves the size of the content area of the specified window.
+Retrieves the size of the content area of the specified window.
 
    This function retrieves the size, in screen coordinates, of the content area
    of the specified window.  If you wish to retrieve the size of the
@@ -1770,7 +1733,7 @@ procedure glfwSetWindowPos(window: pGLFWwindow; xpos, ypos: integer);
 procedure glfwGetWindowSize(window: pGLFWwindow; var Width, Height: integer); cdecl;
   external GLFW_DLL;
  {
- /! brief Sets the size limits of the specified window.
+ Sets the size limits of the specified window.
 
    This function sets the size limits of the content area of the specified
    window.  If the window is full screen, the size limits only take effect
@@ -1812,7 +1775,7 @@ procedure glfwGetWindowSize(window: pGLFWwindow; var Width, Height: integer); cd
 procedure glfwSetWindowSizeLimits(window: pGLFWwindow; minwidth: integer;
   minheight: integer; maxwidth: integer; maxheight: integer); cdecl; external GLFW_DLL;
 {
-/! brief Sets the aspect ratio of the specified window.
+ Sets the aspect ratio of the specified window.
 
    This function sets the required aspect ratio of the content area of the
    specified window.  If the window is full screen, the aspect ratio only takes
@@ -1853,51 +1816,51 @@ procedure glfwSetWindowSizeLimits(window: pGLFWwindow; minwidth: integer;
 
 }
 procedure glfwSetWindowAspectRatio(window: pGLFWwindow; numer: integer; demon: integer);
-
-{
-/! brief Sets the size of the content area of the specified window.
-
-   This function sets the size, in screen coordinates, of the content area of
-   the specified window.
-
-   For full screen windows, this function updates the resolution of its desired
-   video mode and switches to the video mode closest to it, without affecting
-   the window's context.  As the context is unaffected, the bit depths of the
-   framebuffer remain unchanged.
-
-   If you wish to update the refresh rate of the desired video mode in addition
-   to its resolution, see ref glfwSetWindowMonitor.
-
-   The window manager may put limits on what sizes are allowed.  GLFW cannot
-   and should not override these limits.
-
-   param[in] window The window to resize.
-   param[in] width The desired width, in screen coordinates, of the window
-   content area.
-   param[in] height The desired height, in screen coordinates, of the window
-   content area.
-
-   errors Possible errors include ref GLFW_NOT_INITIALIZED and ref
-   GLFW_PLATFORM_ERROR.
-
-   remark wayland A full screen window will not attempt to change the mode,
-   no matter what the requested size.
-
-   thread_safety This function must only be called from the main thread.
-
-   sa ref window_size
-   sa ref glfwGetWindowSize
-   sa ref glfwSetWindowMonitor
-
-   since Added in version 1.0.
-   glfw3 Added window handle parameter.
-
+  cdecl; external GLFW_DLL;
+ {
+/*! @brief Sets the size of the content area of the specified window.
+ *
+ *  This function sets the size, in screen coordinates, of the content area of
+ *  the specified window.
+ *
+ *  For full screen windows, this function updates the resolution of its desired
+ *  video mode and switches to the video mode closest to it, without affecting
+ *  the window's context.  As the context is unaffected, the bit depths of the
+ *  framebuffer remain unchanged.
+ *
+ *  If you wish to update the refresh rate of the desired video mode in addition
+ *  to its resolution, see @ref glfwSetWindowMonitor.
+ *
+ *  The window manager may put limits on what sizes are allowed.  GLFW cannot
+ *  and should not override these limits.
+ *
+ *  @param[in] window The window to resize.
+ *  @param[in] width The desired width, in screen coordinates, of the window
+ *  content area.
+ *  @param[in] height The desired height, in screen coordinates, of the window
+ *  content area.
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED and @ref
+ *  GLFW_PLATFORM_ERROR.
+ *
+ *  @remark @wayland A full screen window will not attempt to change the mode,
+ *  no matter what the requested size.
+ *
+ *  @thread_safety This function must only be called from the main thread.
+ *
+ *  @sa @ref window_size
+ *  @sa @ref glfwGetWindowSize
+ *  @sa @ref glfwSetWindowMonitor
+ *
+ *  @since Added in version 1.0.
+ *  @glfw3 Added window handle parameter.
+ *
 }
-procedure glfwSetWindowSize(window: pGLFWwindow; Width: integer; Height: int);
+procedure glfwSetWindowSize(window: pGLFWwindow; var Width, Height: integer);
   cdecl; external GLFW_DLL;
 
 {
-/! brief Retrieves the size of the framebuffer of the specified window.
+ Retrieves the size of the framebuffer of the specified window.
 
    This function retrieves the size, in pixels, of the framebuffer of the
    specified window.  If you wish to retrieve the size of the window in screen
@@ -1925,7 +1888,7 @@ procedure glfwSetWindowSize(window: pGLFWwindow; Width: integer; Height: int);
 procedure glfwGetFramebufferSize(window: pGLFWwindow; var Width, Height: integer);
   cdecl; external GLFW_DLL;
  {
- /! brief Retrieves the size of the frame of the window.
+ Retrieves the size of the frame of the window.
 
    This function retrieves the size, in screen coordinates, of each edge of the
    frame of the specified window.  This size includes the title bar, if the
@@ -1958,7 +1921,6 @@ procedure glfwGetFramebufferSize(window: pGLFWwindow; var Width, Height: integer
 
    since Added in version 3.1.
 
- /
  }
 
 procedure glfwGetWindowFrameSize(window: GLFWwindow; left, top, right, bottom: integer);
@@ -2054,7 +2016,7 @@ procedure glfwSetWindowOpacity(monitor: pGLFWwindow; opacity: single);
   cdecl; external GLFW_DLL;
 
 {
-/! brief Iconifies the specified window.
+ Iconifies the specified window.
 
    This function iconifies (minimizes) the specified window if it was
    previously restored.  If the window is already iconified, this function does
@@ -2080,8 +2042,7 @@ procedure glfwSetWindowOpacity(monitor: pGLFWwindow; opacity: single);
 }
 procedure glfwIconifyWindow(window: pGLFWwindow); cdecl; external GLFW_DLL;
 
-{
-/! brief Restores the specified window.
+{ Restores the specified window.
 
    This function restores the specified window if it was previously iconified
    (minimized) or maximized.  If the window is already restored, this function
@@ -2107,7 +2068,7 @@ procedure glfwIconifyWindow(window: pGLFWwindow); cdecl; external GLFW_DLL;
 procedure glfwRestoreWindow(window: pGLFWwindow); cdecl; external GLFW_DLL;
 
 {
-/! brief Maximizes the specified window.
+ Maximizes the specified window.
 
    This function maximizes the specified window if it was previously not
    maximized.  If the window is already maximized, this function does nothing.
@@ -2129,10 +2090,10 @@ procedure glfwRestoreWindow(window: pGLFWwindow); cdecl; external GLFW_DLL;
    since Added in GLFW 3.2.
 
 }
-procedure glfwMaximizeWindow(window: pGLFWwindow);
+procedure glfwMaximizeWindow(window: pGLFWwindow); cdecl; external GLFW_DLL;
 
 {
-/! brief Makes the specified window visible.
+ Makes the specified window visible.
 
    This function makes the specified window visible if it was previously
    hidden.  If the window is already visible or is in full screen mode, this
@@ -2163,7 +2124,7 @@ procedure glfwMaximizeWindow(window: pGLFWwindow);
 procedure glfwShowWindow(window: pGLFWwindow); cdecl; external GLFW_DLL;
 
 {
-/! brief Hides the specified window.
+ Hides the specified window.
 
    This function hides the specified window if it was previously visible.  If
    the window is already hidden or is in full screen mode, this function does
@@ -2246,13 +2207,11 @@ procedure glfwFocusWindow(window: pGLFWwindow); cdecl; external GLFW_DLL;
 
    since Added in version 3.3.
 
-   ingroup window
- /
-GLFWAPI void glfwRequestWindowAttention(GLFWwindow window);}
+}
 procedure glfwRequestWindowAttention(window: pGLFWwindow); cdecl; external GLFW_DLL;
 
  {
- /! brief Returns the monitor that the window uses for full screen mode.
+ Returns the monitor that the window uses for full screen mode.
 
    This function returns the handle of the monitor that the specified window is
    in full screen on.
@@ -2270,12 +2229,9 @@ procedure glfwRequestWindowAttention(window: pGLFWwindow); cdecl; external GLFW_
 
    since Added in version 3.0.
 
-
  }
 function glfwGetWindowMonitor(window: pGLFWwindow): pGLFWmonitor;
   cdecl; external GLFW_DLL;
-
-
 
 
 {
@@ -2337,7 +2293,7 @@ function glfwGetWindowMonitor(window: pGLFWwindow): pGLFWmonitor;
 procedure glfwSetWindowMonitor(window: pGLFWwindow; monitor: pGLFWmonitor;
   xpos, ypos, Width, Height, refreshRate: integer); cdecl; external GLFW_DLL;
   {
-  /! brief Returns an attribute of the specified window.
+   Returns an attribute of the specified window.
 
    This function returns the value of an attribute of the specified window or
    its OpenGL or OpenGL ES context.
@@ -2371,11 +2327,11 @@ procedure glfwSetWindowMonitor(window: pGLFWwindow; monitor: pGLFWmonitor;
    `glfwGetGLVersion`.
  }
 procedure glfwGetWindowAttrib(window: pGLFWwindow; attrib: integer);
-  cdecl; external GLFW_DLL
+  cdecl; external GLFW_DLL;
 
  {
  
-/! brief Sets an attribute of the specified window.
+ Sets an attribute of the specified window.
 
    This function sets the value of an attribute of the specified window.
 
@@ -2411,9 +2367,7 @@ procedure glfwGetWindowAttrib(window: pGLFWwindow; attrib: integer);
    ingroup window
  }
 
-//procedure glfwSetWindowAttrib(window: pGLFWwindow; att: integer; Value: integer);
-
-procedure glfwSetWindowSize(window: pGLFWwindow; var Width, Height: integer);
+procedure glfwSetWindowAttrib(window: pGLFWwindow; att: integer; Value: integer);
   cdecl; external GLFW_DLL;
 
 
@@ -2421,44 +2375,8 @@ procedure glfwGetWindowPos(window: pGLFWWindow; var xpos, ypos: integer);
   cdecl; external GLFW_DLL;
 
 
-{ Sets an attribute of the specified window.
-
-   This function sets the value of an attribute of the specified window.
-
-   The supported attributes are [GLFW_DECORATED](ref GLFW_DECORATED_attrib),
-   [GLFW_RESIZABLE](ref GLFW_RESIZABLE_attrib),
-   [GLFW_FLOATING](ref GLFW_FLOATING_attrib),
-   [GLFW_AUTO_ICONIFY](ref GLFW_AUTO_ICONIFY_attrib) and
-   [GLFW_FOCUS_ON_SHOW](ref GLFW_FOCUS_ON_SHOW_attrib).
-
-   Some of these attributes are ignored for full screen windows.  The new
-   value will take effect if the window is later made windowed.
-
-   Some of these attributes are ignored for windowed mode windows.  The new
-   value will take effect if the window is later made full screen.
-
-   param[in] window The window to set the attribute for.
-   param[in] attrib A supported window attribute.
-   param[in] value `GLFW_TRUE` or `GLFW_FALSE`.
-
-   errors Possible errors include ref GLFW_NOT_INITIALIZED, ref
-   GLFW_INVALID_ENUM, ref GLFW_INVALID_VALUE and ref GLFW_PLATFORM_ERROR.
-
-   remark Calling ref glfwGetWindowAttrib will always return the latest
-   value, even if that value is ignored by the current mode of the window.
-
-   thread_safety This function must only be called from the main thread.
-
-   sa ref window_attribs
-   sa ref glfwGetWindowAttrib
-
-   since Added in version 3.3.
-
- }
-procedure glfwSetWindowAttrib(Windows: pGLFWwindow; attrib, Value: integer);
-  cdecl; external GLFW_DLL;
 {
-/! brief Sets the user pointer of the specified window.
+   Sets the user pointer of the specified window.
 
    This function sets the user-defined pointer of the specified window.  The
    current value is retained until the window is destroyed.  The initial value
@@ -2735,9 +2653,8 @@ function glfwSetWindowIconifyCallback(window: pGLFWwindow;
 
    since Added in version 3.3.
 
-   ingroup window
- /
-GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow window, GLFWwindowmaximizefun callback);}
+// }
+
 function glfwSetWindowMaximizeCallback(Windows: pGLFWwindow;
   cbfun: GLFWwindowmaximizefun): pGLFWwindowmaximizefun; cdecl; external GLFW_DLL;
 
@@ -2932,11 +2849,9 @@ procedure glfwWaitEvents; cdecl; external GLFW_DLL;
 
    since Added in version 3.2.
 
-   ingroup window
- /
-GLFWAPI void glfwWaitEventsTimeout(double timeout);}
+}
 procedure glfwWaitEventsTimeout(timeout: double); cdecl; external GLFW_DLL;
-{/! brief Posts an empty event to the event queue.
+{ Posts an empty event to the event queue.
 
    This function posts an empty event from the current thread to the event
    queue, causing ref glfwWaitEvents or ref glfwWaitEventsTimeout to return.
@@ -3680,13 +3595,134 @@ function glfwSetCursorEnterCallback(window: pGLFWwindow;
  }
 function glfwSetScrollCallback(window: pGLFWwindow;
   cbfun: GLFWscrollfun): pGLFWscrollfun; cdecl; external GLFW_DLL;
-
+{
+   Sets the path drop callback.
+ *
+ *  This function sets the path drop callback of the specified window, which is
+ *  called when one or more dragged paths are dropped on the window.
+ *
+ *  Because the path array and its strings may have been generated specifically
+ *  for that event, they are not guaranteed to be valid after the callback has
+ *  returned.  If you wish to use them after the callback returns, you need to
+ *  make a deep copy.
+ *
+ *  @param[in] window The window whose callback to set.
+ *  @param[in] callback The new file drop callback, or `NULL` to remove the
+ *  currently set callback.
+ *  @return The previously set callback, or `NULL` if no callback was set or the
+ *  library had not been [initialized](@ref intro_init).
+ *
+ *  @callback_signature
+ *  @code
+ *  void function_name(GLFWwindow* window, int path_count, const char* paths[])
+ *  @endcode
+ *  For more information about the callback parameters, see the
+ *  [function pointer type](@ref GLFWdropfun).
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
+ *
+ *  @remark @wayland File drop is currently unimplemented.
+ *
+ *  @thread_safety This function must only be called from the main thread.
+ *
+ *  @sa @ref path_drop
+ *
+ *  @since Added in version 3.1.
+}
 function glfwSetDropCallback(window: pGLFWwindow; cbfun: GLFWdropfun): pGLFWdropfun;
-  cdecl; external GLFW_DLL; //Version 3.1
+  cdecl; external GLFW_DLL;
+{
+   Returns whether the specified joystick is present.
+ *
+ *  This function returns whether the specified joystick is present.
+ *
+ *  There is no need to call this function before other functions that accept
+ *  a joystick ID, as they all check for presence before performing any other
+ *  work.
+ *
+ *  @param[in] jid The [joystick](@ref joysticks) to query.
+ *  @return `GLFW_TRUE` if the joystick is present, or `GLFW_FALSE` otherwise.
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+ *  GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
+ *
+ *  @thread_safety This function must only be called from the main thread.
+ *
+ *  @sa @ref joystick
+ *
+ *  @since Added in version 3.0.  Replaces `glfwGetJoystickParam`.
+}
 function glfwJoystickPresent(joy: integer): integer; cdecl; external GLFW_DLL;
+ {
+ Returns the values of all axes of the specified joystick.
+ *
+ *  This function returns the values of all axes of the specified joystick.
+ *  Each element in the array is a value between -1.0 and 1.0.
+ *
+ *  If the specified joystick is not present this function will return `NULL`
+ *  but will not generate an error.  This can be used instead of first calling
+ *  @ref glfwJoystickPresent.
+ *
+ *  @param[in] jid The [joystick](@ref joysticks) to query.
+ *  @param[out] count Where to store the number of axis values in the returned
+ *  array.  This is set to zero if the joystick is not present or an error
+ *  occurred.
+ *  @return An array of axis values, or `NULL` if the joystick is not present or
+ *  an [error](@ref error_handling) occurred.
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+ *  GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
+ *
+ *  @pointer_lifetime The returned array is allocated and freed by GLFW.  You
+ *  should not free it yourself.  It is valid until the specified joystick is
+ *  disconnected or the library is terminated.
+ *
+ *  @thread_safety This function must only be called from the main thread.
+ *
+ *  @sa @ref joystick_axis
+ *
+ *  @since Added in version 3.0.  Replaces `glfwGetJoystickPos`.
+ }
 function glfwGetJoystickAxes(joy: integer; var Count: integer): pfloat;
   cdecl; external GLFW_DLL;
-
+ {
+ Returns the state of all buttons of the specified joystick.
+ *
+ *  This function returns the state of all buttons of the specified joystick.
+ *  Each element in the array is either `GLFW_PRESS` or `GLFW_RELEASE`.
+ *
+ *  For backward compatibility with earlier versions that did not have @ref
+ *  glfwGetJoystickHats, the button array also includes all hats, each
+ *  represented as four buttons.  The hats are in the same order as returned by
+ *  __glfwGetJoystickHats__ and are in the order _up_, _right_, _down_ and
+ *  _left_.  To disable these extra buttons, set the @ref
+ *  GLFW_JOYSTICK_HAT_BUTTONS init hint before initialization.
+ *
+ *  If the specified joystick is not present this function will return `NULL`
+ *  but will not generate an error.  This can be used instead of first calling
+ *  @ref glfwJoystickPresent.
+ *
+ *  @param[in] jid The [joystick](@ref joysticks) to query.
+ *  @param[out] count Where to store the number of button states in the returned
+ *  array.  This is set to zero if the joystick is not present or an error
+ *  occurred.
+ *  @return An array of button states, or `NULL` if the joystick is not present
+ *  or an [error](@ref error_handling) occurred.
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+ *  GLFW_INVALID_ENUM and @ref GLFW_PLATFORM_ERROR.
+ *
+ *  @pointer_lifetime The returned array is allocated and freed by GLFW.  You
+ *  should not free it yourself.  It is valid until the specified joystick is
+ *  disconnected or the library is terminated.
+ *
+ *  @thread_safety This function must only be called from the main thread.
+ *
+ *  @sa @ref joystick_button
+ *
+ *  @since Added in version 2.2.
+ *  @glfw3 Changed to return a dynamic array.
+ }
 function glfwGetJoystickButtons(joy: integer; varcount: integer): pCharArray;
   cdecl; external GLFW_DLL;
 {
@@ -3868,7 +3904,7 @@ function glfwGetJoystickUserPointer(jid: integer): Pointer; cdecl; external GLFW
    since Added in version 3.3.
 
    ingroup input
- /
+
 }
 function glfwJoystickIsGamepad(jid: integer): GLFW_INT; cdecl; external GLFW_DLL;
 { Sets the joystick configuration callback.
@@ -3904,7 +3940,7 @@ function glfwJoystickIsGamepad(jid: integer): GLFW_INT; cdecl; external GLFW_DLL
    since Added in version 3.2.
 
    ingroup input
- /
+
 }
 function glfwSetJoystickCallback(cbfun: GLFWjoystickfun): pGLFWjoystickfun; cdecl;
   external GLFW_DLL;
@@ -3941,12 +3977,12 @@ function glfwSetJoystickCallback(cbfun: GLFWjoystickfun): pGLFWjoystickfun; cdec
    since Added in version 3.3.
 
    ingroup input
- /
+
 
 }
 function glfwUpdateGamepadMappings(mappings: PChar): GLFW_INT; cdecl; external GLFW_DLL;
 {
-/! brief Returns the human-readable gamepad name for the specified joystick.
+ ! brief Returns the human-readable gamepad name for the specified joystick.
 
    This function returns the human-readable name of the gamepad from the
    gamepad mapping assigned to the specified joystick.
@@ -3973,11 +4009,11 @@ function glfwUpdateGamepadMappings(mappings: PChar): GLFW_INT; cdecl; external G
    since Added in version 3.3.
 
    ingroup input
- /
+
 }
 function glfwGetGamepadName(jid: GLFW_INT): PChar; cdecl; external GLFW_DLL;
 
-{/! brief Retrieves the state of the specified joystick remapped as a gamepad.
+{ ! brief Retrieves the state of the specified joystick remapped as a gamepad.
 
    This function retrieves the state of the specified joystick remapped to
    an Xbox-like gamepad.
@@ -4012,30 +4048,28 @@ function glfwGetGamepadName(jid: GLFW_INT): PChar; cdecl; external GLFW_DLL;
    since Added in version 3.3.
 
    ingroup input
- /
+
 
 }
 function glfwGetGamepadState(jid: GLFW_INT; state: pGLFWgamepadstate): GLFW_INT;
   cdecl; external GLFW_DLL;
 
 
-//========================================================================
-// clipboard
-//========================================================================
+//  ========================================================================
+//   clipboard
+//  ========================================================================
 procedure glfwSetClipboardString(window: pGLFWwindow; char: string);
   cdecl; external GLFW_DLL;
 function glfwGetClipboardString(window: pGLFWwindow): PChar; cdecl; external GLFW_DLL;
 
-//========================================================================
 //Time
 //========================================================================
-function glfwGetTime: double; cdecl; external GLFW_DLL;
 procedure glfwSetTime(time: double); cdecl; external GLFW_DLL;
 {
-/! brief Returns the current value of the raw timer.
+ ! brief Returns the current value of the raw timer.
 
    This function returns the current value of the raw timer, measured in
-   1&nbsp;/&nbsp;frequency seconds.  To get the frequency, call ref
+   1&nbsp; &nbsp;frequency seconds.  To get the frequency, call ref
    glfwGetTimerFrequency.
 
    return The value of the timer, or zero if an
@@ -4051,12 +4085,12 @@ procedure glfwSetTime(time: double); cdecl; external GLFW_DLL;
    since Added in version 3.2.
 
    ingroup input
- /
+
 
 }
 function glfwGetTimerValue(): uint64; cdecl; external GLFW_DLL;
 {
-/! brief Returns the frequency, in Hz, of the raw timer.
+ ! brief Returns the frequency, in Hz, of the raw timer.
 
    This function returns the frequency, in Hz, of the raw timer.
 
@@ -4072,26 +4106,225 @@ function glfwGetTimerValue(): uint64; cdecl; external GLFW_DLL;
 
    since Added in version 3.2.
 
-   ingroup input
- /
+
 }
 
 function glfwGetTimerFrequency(): uint64; cdecl; external GLFW_DLL;
 
+{
+Makes the context of the specified window current for the calling
+ *  thread.
+ *
+ *  This function makes the OpenGL or OpenGL ES context of the specified window
+ *  current on the calling thread.  A context must only be made current on
+ *  a single thread at a time and each thread can have only a single current
+ *  context at a time.
+ *
+ *  When moving a context between threads, you must make it non-current on the
+ *  old thread before making it current on the new one.
+ *
+ *  By default, making a context non-current implicitly forces a pipeline flush.
+ *  On machines that support `GL_KHR_context_flush_control`, you can control
+ *  whether a context performs this flush by setting the
+ *  [GLFW_CONTEXT_RELEASE_BEHAVIOR](@ref GLFW_CONTEXT_RELEASE_BEHAVIOR_hint)
+ *  hint.
+ *
+ *  The specified window must have an OpenGL or OpenGL ES context.  Specifying
+ *  a window without a context will generate a @ref GLFW_NO_WINDOW_CONTEXT
+ *  error.
+ *
+ *  @param[in] window The window whose context to make current, or `NULL` to
+ *  detach the current context.
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+ *  GLFW_NO_WINDOW_CONTEXT and @ref GLFW_PLATFORM_ERROR.
+ *
+ *  @thread_safety This function may be called from any thread.
+ *
+ *  @sa @ref context_current
+ *  @sa @ref glfwGetCurrentContext
+ *
+ *  @since Added in version 3.0.
+}
+procedure glfwMakeContextCurrent(window: pGLFWwindow); cdecl; external GLFW_DLL;
+
+{
+Returns the window whose context is current on the calling thread.
+ *
+ *  This function returns the window whose OpenGL or OpenGL ES context is
+ *  current on the calling thread.
+ *
+ *  @return The window whose context is current, or `NULL` if no window's
+ *  context is current.
+ *
+ *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
+ *
+ *  @thread_safety This function may be called from any thread.
+ *
+ *  @sa @ref context_current
+ *  @sa @ref glfwMakeContextCurrent
+ *
+ *  @since Added in version 3.0.
+}
+function glfwGetCurrentContext: pGLFWwindow; cdecl; external GLFW_DLL;
 //========================================================================
 //Context
 //========================================================================
+{
+Swaps the front and back buffers of the specified window.
+
+    This function swaps the front and back buffers of the specified window when
+    rendering with OpenGL or OpenGL ES.  If the swap interval is greater than
+    zero, the GPU driver waits the specified number of screen updates before
+    swapping the buffers.
+
+    The specified window must have an OpenGL or OpenGL ES context.  Specifying
+    a window without a context will generate a @ref GLFW_NO_WINDOW_CONTEXT
+    error.
+
+    This function does not apply to Vulkan.  If you are rendering with Vulkan,
+    see `vkQueuePresentKHR` instead.
+
+    @param[in] window The window whose buffers to swap.
+
+    @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+    GLFW_NO_WINDOW_CONTEXT and @ref GLFW_PLATFORM_ERROR.
+
+    @remark __EGL:__ The context of the specified window must be current on the
+    calling thread.
+
+    @thread_safety This function may be called from any thread.
+
+    @sa @ref buffer_swap
+    @sa @ref glfwSwapInterval
+
+    @since Added in version 1.0.
+    @glfw3 Added window handle parameter.
+}
+
 procedure glfwSwapBuffers(window: pGLFWwindow); cdecl; external GLFW_DLL;
-procedure glfwMakeContextCurrent(window: pGLFWwindow); cdecl; external GLFW_DLL;
-function glfwGetCurrentContext: pGLFWwindow; cdecl; external GLFW_DLL;
+{
+Sets the swap interval for the current context.
+
+    This function sets the swap interval for the current OpenGL or OpenGL ES
+    context, i.e. the number of screen updates to wait from the time @ref
+    glfwSwapBuffers was called before swapping the buffers and returning.  This
+    is sometimes called _vertical synchronization_, _vertical retrace
+    synchronization_ or just _vsync_.
+
+    A context that supports either of the `WGL_EXT_swap_control_tear` and
+    `GLX_EXT_swap_control_tear` extensions also accepts _negative_ swap
+    intervals, which allows the driver to swap immediately even if a frame
+    arrives a little bit late.  You can check for these extensions with @ref
+    glfwExtensionSupported.
+
+    A context must be current on the calling thread.  Calling this function
+    without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
+
+    This function does not apply to Vulkan.  If you are rendering with Vulkan,
+    see the present mode of your swapchain instead.
+
+    @param[in] interval The minimum number of screen updates to wait for
+    until the buffers are swapped by @ref glfwSwapBuffers.
+
+    @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+    GLFW_NO_CURRENT_CONTEXT and @ref GLFW_PLATFORM_ERROR.
+
+    @remark This function is not called during context creation, leaving the
+    swap interval set to whatever is the default on that platform.  This is done
+    because some swap interval extensions used by GLFW do not allow the swap
+    interval to be reset to zero once it has been set to a non-zero value.
+
+    @remark Some GPU drivers do not honor the requested swap interval, either
+    because of a user setting that overrides the application's request or due to
+    bugs in the driver.
+
+    @thread_safety This function may be called from any thread.
+
+    @sa @ref buffer_swap
+    @sa @ref glfwSwapBuffers
+
+    @since Added in version 1.0.
+}
 procedure glfwSwapInterval(interval: integer); cdecl; external GLFW_DLL;
+ {
+  Returns whether the specified extension is available.
+
+    This function returns whether the specified
+    [API extension](@ref context_glext) is supported by the current OpenGL or
+    OpenGL ES context.  It searches both for client API extension and context
+    creation API extensions.
+
+    A context must be current on the calling thread.  Calling this function
+    without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
+
+    As this functions retrieves and searches one or more extension strings each
+    call, it is recommended that you cache its results if it is going to be used
+    frequently.  The extension strings will not change during the lifetime of
+    a context, so there is no danger in doing this.
+
+    This function does not apply to Vulkan.  If you are using Vulkan, see @ref
+    glfwGetRequiredInstanceExtensions, `vkEnumerateInstanceExtensionProperties`
+    and `vkEnumerateDeviceExtensionProperties` instead.
+
+    @param[in] extension The ASCII encoded name of the extension.
+    @return `GLFW_TRUE` if the extension is available, or `GLFW_FALSE`
+    otherwise.
+
+    @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+    GLFW_NO_CURRENT_CONTEXT, @ref GLFW_INVALID_VALUE and @ref
+    GLFW_PLATFORM_ERROR.
+
+    @thread_safety This function may be called from any thread.
+
+    @sa @ref context_glext
+    @sa @ref glfwGetProcAddress
+
+    @since Added in version 1.0.
+ }
 function glfwExtensionSupported(extension: PChar): integer; cdecl; external GLFW_DLL;
+{
+Returns the address of the specified function for the current
+    context.
+
+    This function returns the address of the specified OpenGL or OpenGL ES
+    [core or extension function](@ref context_glext), if it is supported
+    by the current context.
+
+    A context must be current on the calling thread.  Calling this function
+    without a current context will cause a @ref GLFW_NO_CURRENT_CONTEXT error.
+
+    This function does not apply to Vulkan.  If you are rendering with Vulkan,
+    see @ref glfwGetInstanceProcAddress, `vkGetInstanceProcAddr` and
+    `vkGetDeviceProcAddr` instead.
+
+    @aram[in] procname The ASCII encoded name of the function.
+    return The address of the function, or `NULL` if an
+    [error](@ref error_handling) occurred.
+
+    errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
+    GLFW_NO_CURRENT_CONTEXT and @ref GLFW_PLATFORM_ERROR.
+
+    remark The address of a given function is not guaranteed to be the same
+    between contexts.
+
+    remark This function may return a non-`NULL` address despite the
+    associated version or extension not being available.  Always check the
+    context version or extension string first.
+
+    pointer_lifetime The returned function pointer is valid until the context
+    is destroyed or the library is terminated.
+
+    thread_safety This function may be called from any thread.
+
+    sa @ref context_glext
+    sa @ref glfwExtensionSupported
+
+    since Added in version 1.0.
+ }
 function glfwGetProcAddress(procname: PChar): pGLFWglproc; cdecl; external GLFW_DLL;
 
-//========================================================================
-//Vulkan
-//========================================================================
-{/! brief Returns whether the Vulkan loader and an ICD have been found.
+{  brief Returns whether the Vulkan loader and an ICD have been found.
 
    This function returns whether the Vulkan loader and any minimally functional
    ICD have been found.
@@ -4116,10 +4349,14 @@ function glfwGetProcAddress(procname: PChar): pGLFWglproc; cdecl; external GLFW_
    since Added in version 3.2.
 
    ingroup vulkan
- /
+
 }
 
 function glfwVulkanSupported(): integer; cdecl; external GLFW_DLL;
+
+
+
+
  { Returns the Vulkan instance extensions required by GLFW.
 
    This function returns an array of names of Vulkan instance extensions required
@@ -4165,7 +4402,7 @@ function glfwVulkanSupported(): integer; cdecl; external GLFW_DLL;
    since Added in version 3.2.
 
    ingroup vulkan
- /
+
 }
 function glfwGetRequiredInstanceExtensions(var Count: uint32): PChar;
   cdecl; external GLFW_DLL;
@@ -4173,7 +4410,7 @@ function glfwGetRequiredInstanceExtensions(var Count: uint32): PChar;
 
 {$IFDEF VK_VERSION_1_0}
  {
-/! brief Returns the address of the specified Vulkan instance function.
+   Returns the address of the specified Vulkan instance function.
 
    This function returns the address of the specified Vulkan core or extension
    function for the specified instance.  If instance is set to `NULL` it can
@@ -4209,14 +4446,11 @@ function glfwGetRequiredInstanceExtensions(var Count: uint32): PChar;
    sa ref vulkan_proc
 
    since Added in version 3.2.
-
-   ingroup vulkan
- /
-GLFWAPI GLFWvkproc glfwGetInstanceProcAddress(VkInstance instance, const char procname);}
+}
 function glfwGetInstanceProcAddress(instance: VkInstance;
   procname: PChar): pglfwGetInstanceProcAddress; cdecl; external GLFW_DLL;
 {
-/! brief Returns whether the specified queue family can present images.
+ ! brief Returns whether the specified queue family can present images.
 
    This function returns whether the specified queue family of the specified
    physical device supports presentation to the platform GLFW was built for.
@@ -4249,13 +4483,11 @@ function glfwGetInstanceProcAddress(instance: VkInstance;
 
    since Added in version 3.2.
 
-   ingroup vulkan
- /
-GLFWAPI int glfwGetPhysicalDevicePresentationSupport(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);}
 
+}
 function glfwGetPhysicalDevicePresentationSupport(instance: VkInstance;
   device: VkPhysicalDevice; queuefamily: UInt32): integer; cdecl; external GLFW_DLL;
- {/! brief Creates a Vulkan surface for the specified window.
+ {  Creates a Vulkan surface for the specified window.
 
    This function creates a Vulkan surface for the specified window.
 
@@ -4312,8 +4544,8 @@ function glfwGetPhysicalDevicePresentationSupport(instance: VkInstance;
 
    since Added in version 3.2.
 
-   ingroup vulkan
- /
+
+
 }
 
 function glfwCreateWindowSurface(instance: VkInstance; window: pGLFWwindow;
@@ -4322,11 +4554,11 @@ function glfwCreateWindowSurface(instance: VkInstance; window: pGLFWwindow;
 
 {$ENDIF}
 
-//========================================================================
-// Error
-//========================================================================
+//  ========================================================================
+//   Error
+//  ========================================================================
 {
-/! brief Sets the error callback.
+ Sets the error callback.
 
    This function sets the error callback, which is called with an error code
    and a human-readable description each time a GLFW error occurs.
@@ -4370,4 +4602,4 @@ function glfwSetErrorCallback(cbfun: GLFWerrorfun): pGLFWerrorfun;
 
 implementation
 
-
+end.
