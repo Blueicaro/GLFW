@@ -29,9 +29,6 @@ More info:
   3. This notice may not be removed or altered from any source
      distribution.
 
-
-
-
   Pascal header translate by: Jorge Turiel (Aka BlueIcaro)
   with the help of the lazarus community (http://www.lazarus.freepascal.org/index.php)
 
@@ -46,7 +43,7 @@ More info:
 unit glfw;
 
 {$mode objfpc}{$H+}
-{$WARN 2005 off : Comment level $1 found}
+
 interface
 
 uses
@@ -4417,10 +4414,10 @@ function glfwGetRequiredInstanceExtensions(var Count: uint32): PChar;
    return any function exported from the Vulkan loader, including at least the
    following functions:
 
-   - `vkEnumerateInstanceExtensionProperties`
-   - `vkEnumerateInstanceLayerProperties`
-   - `vkCreateInstance`
-   - `vkGetInstanceProcAddr`
+   - vkEnumerateInstanceExtensionProperties`
+   - vkEnumerateInstanceLayerProperties`
+   - vkCreateInstance`
+   - vkGetInstanceProcAddr`
 
    If Vulkan is not available on the machine, this function returns `NULL` and
    generates a ref GLFW_API_UNAVAILABLE error.  Call ref glfwVulkanSupported
@@ -4450,7 +4447,7 @@ function glfwGetRequiredInstanceExtensions(var Count: uint32): PChar;
 function glfwGetInstanceProcAddress(instance: VkInstance;
   procname: PChar): pglfwGetInstanceProcAddress; cdecl; external GLFW_DLL;
 {
- ! brief Returns whether the specified queue family can present images.
+ f Returns whether the specified queue family can present images.
 
    This function returns whether the specified queue family of the specified
    physical device supports presentation to the platform GLFW was built for.

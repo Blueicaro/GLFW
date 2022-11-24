@@ -57,10 +57,6 @@ type
   pGLFWmonitor = ^GLFWmonitor;
   pFloat = ^longint;
 
-//========================================================================
-//Video Mode
-//========================================================================
-
 
 type
   GLFWvidmode = record
@@ -74,10 +70,6 @@ type
 
   pGLFWvidmode = ^GLFWvidmode;
 
-
-//========================================================================
-//Gamma
-//========================================================================
 type
   PGLFWgammaramp = ^GLFWgammaramp;
 
@@ -91,14 +83,12 @@ type
 type
   CharArray = array of char;
   pCharArray = CharArray;
-//=======================================================================
-//Inputs
-//=======================================================================
-type    //Version 3.1
+
+type
   pGLFWcursor = ^GLFWcursor;
   GLFWcursor = integer;
 
-type   //Version 3.1
+type
   pGLFWimage = ^GLFWimage;
 
   GLFWimage = record
@@ -115,9 +105,6 @@ type
     axex: array [0..6] of single;
   end;
 
-//========================================================================
-//Callbacks  must be cdecl
-//========================================================================
 type
   pGLFWKeyFun = ^GLFWKeyFun;
   GLFWKeyFun = procedure(p: pGLFWWindow; i2, i3, i4, i5: longint); cdecl;
@@ -166,8 +153,6 @@ type
    sa glfwSetWindowMaximizeCallback
 
    since Added in version 3.3.
-
-   ingroup window
 
      }
 
@@ -297,7 +282,7 @@ const
   //Version 334
  {
    hat_state Joystick hat states
-   brief Joystick hat states.
+     Joystick hat states.
 
    See joystick hat input (ref joystick_hat) for how these are used.
    }
@@ -626,15 +611,15 @@ const
 
   { macOS specific init hint.
 
-     macOS specific [init hint](ref GLFW_COCOA_CHDIR_RESOURCES_hint).
-   /}
+     macOS specific .
+   }
 
   GLFW_COCOA_CHDIR_RESOURCES = $00051001;
 
-  {! brief macOS specific init hint.
+  {!   macOS specific init hint.
 
-     macOS specific [init hint](ref GLFW_COCOA_MENUBAR_hint).
-   / }
+     macOS specific ).
+    }
   GLFW_COCOA_MENUBAR = $00051002;
 
   GLFW_DONT_CARE = -1;
@@ -823,7 +808,7 @@ function glfwGetError(description: PChar): integer; cdecl; external GLFW_DLL;
 //Monitor
 //========================================================================
  {
- /! brief Returns the currently connected monitors.
+ /!   Returns the currently connected monitors.
 
    This function returns an array of handles for all currently connected
    monitors.  The primary monitor is always first in the returned array.  If no
@@ -850,7 +835,7 @@ function glfwGetError(description: PChar): integer; cdecl; external GLFW_DLL;
  }
 function glfwGetMonitors(var Monitors: GLFW_INT): GLFWmonitor; cdecl; external GLFW_DLL;
 {
-/! brief Returns the primary monitor.
+/!   Returns the primary monitor.
 
    This function returns the primary monitor.  This is usually the monitor
    where elements like the task bar or global menu bar are located.
@@ -874,7 +859,7 @@ function glfwGetMonitors(var Monitors: GLFW_INT): GLFWmonitor; cdecl; external G
 }
 function glfwGetPrimaryMonitor: pGLFWmonitor; cdecl; external GLFW_DLL;
 {
-/! brief Returns the position of the monitor's viewport on the virtual screen.
+/!   Returns the position of the monitor's viewport on the virtual screen.
 
    This function returns the position, in screen coordinates, of the upper-left
    corner of the specified monitor.
@@ -931,7 +916,7 @@ GLFWAPI void glfwGetMonitorWorkarea(GLFWmonitor monitor, int xpos, int ypos, int
 procedure glfwGetMonitorWorkarea(monitor: pGLFWmonitor;
   var xpos, ypos, Width, Height: GLFW_INT); cdecl; external GLFW_DLL;
  {
- /! brief Returns the physical size of the monitor.
+ /!   Returns the physical size of the monitor.
 
    This function returns the size, in millimetres, of the display area of the
    specified monitor.
@@ -996,7 +981,7 @@ procedure glfwGetMonitorPhysicalSize(Monitor: pGLFWmonitor; var Width: GLFW_INT;
 procedure glfwGetMonitorContentScale(monitor: pGLFWmonitor; var xscale, yscale: single);
   cdecl; external GLFW_DLL;
 {
-/! brief Returns the name of the specified monitor.
+/!   Returns the name of the specified monitor.
 
    This function returns a human-readable name, encoded as UTF-8, of the
    specified monitor.  The name typically reflects the make and model of the
@@ -1075,7 +1060,7 @@ GLFWAPI void glfwGetMonitorUserPointer(GLFWmonitor monitor);}
 function glfwGetMonitorUserPointer(monitor: pGLFWmonitor): Pointer;
   cdecl; external GLFW_DLL;
  {
- /! brief Sets the monitor configuration callback.
+ /!   Sets the monitor configuration callback.
 
    This function sets the monitor configuration callback, or removes the
    currently set callback.  This is called when a monitor is connected to or
@@ -1110,7 +1095,7 @@ function glfwSetMonitorCallback(cbfun: GLFWmonitorfun): pGLFWmonitorfun;
 //========================================================================
 
 {
-/! brief Returns the available video modes for the specified monitor.
+/!   Returns the available video modes for the specified monitor.
 
    This function returns an array of all video modes supported by the specified
    monitor.  The returned array is sorted in ascending order, first by color
@@ -1146,7 +1131,7 @@ function glfwSetMonitorCallback(cbfun: GLFWmonitorfun): pGLFWmonitorfun;
 function glfwGetVideoModes(monitor: pGLFWmonitor; var Count: longint): PGLFWvidmode;
   cdecl; external GLFW_DLL;
   {
-  /! brief Returns the current mode of the specified monitor.
+  /!   Returns the current mode of the specified monitor.
 
    This function returns the current video mode of the specified monitor.  If
    you have created a full screen window for that monitor, the return value
@@ -1176,7 +1161,7 @@ function glfwGetVideoModes(monitor: pGLFWmonitor; var Count: longint): PGLFWvidm
 function glfwGetVideoMode(monitor: pGLFWmonitor): pGLFWvidmode;
   cdecl; external GLFW_DLL;
 {
-! brief Generates a gamma ramp and sets it for the specified monitor.
+!   Generates a gamma ramp and sets it for the specified monitor.
 
    This function generates an appropriately sized gamma ramp from the specified
    exponent and then calls ref glfwSetGammaRamp with it.  The value must be
@@ -1207,7 +1192,7 @@ function glfwGetVideoMode(monitor: pGLFWmonitor): pGLFWvidmode;
 }
 procedure glfwSetGamma(monitor: pGLFWmonitor; gamma: single); cdecl; external GLFW_DLL;
 {
-/! brief Returns the current gamma ramp for the specified monitor.
+/!   Returns the current gamma ramp for the specified monitor.
 
    This function returns the current gamma ramp of the specified monitor.
 
@@ -1234,7 +1219,7 @@ function glfwGetGammaRamp(monitor: pGLFWmonitor): PGLFWgammaramp;
   cdecl; external GLFW_DLL;
 
  {
-  ! brief Sets the current gamma ramp for the specified monitor.
+  !   Sets the current gamma ramp for the specified monitor.
 
    This function sets the current gamma ramp for the specified monitor.  The
    original gamma ramp for that monitor is saved by GLFW the first time this
@@ -1279,7 +1264,7 @@ procedure glfwSetGammaRamp(monitor: pGLFWmonitor; ramp: pGLFWgammaramp);
 //========================================================================
 
 {
-/! brief Resets all window hints to their default values.
+/!   Resets all window hints to their default values.
 
    This function resets all window hints to their
    [default values](ref window_hints_values).
@@ -1296,7 +1281,7 @@ procedure glfwSetGammaRamp(monitor: pGLFWmonitor; ramp: pGLFWgammaramp);
 }
 procedure glfwDefaultWindowHints; cdecl; external GLFW_DLL;
 {
-/! brief Sets the specified window hint to the desired value.
+/!   Sets the specified window hint to the desired value.
 
    This function sets hints for the next call to ref glfwCreateWindow.  The
    hints, once set, retain their values until changed by a call to this
@@ -1330,7 +1315,7 @@ procedure glfwDefaultWindowHints; cdecl; external GLFW_DLL;
 
 procedure glfwWindowHint(target: integer; hint: integer); cdecl; external GLFW_DLL;
 {
-/! brief Sets the specified window hint to the desired value.
+/!   Sets the specified window hint to the desired value.
 
    This function sets hints for the next call to ref glfwCreateWindow.  The
    hints, once set, retain their values until changed by a call to this
@@ -1369,7 +1354,7 @@ procedure glfwWindowHintString(hint: integer; const Value: PChar);
   cdecl; external GLFW_DLL;
   {
   
-/! brief Creates a window and its associated context.
+/!   Creates a window and its associated context.
 
    This function creates a window and its associated OpenGL or OpenGL ES
    context.  Most of the options controlling how the window and its context
@@ -1815,7 +1800,7 @@ procedure glfwSetWindowSizeLimits(window: pGLFWwindow; minwidth: integer;
 procedure glfwSetWindowAspectRatio(window: pGLFWwindow; numer: integer; demon: integer);
   cdecl; external GLFW_DLL;
  {
-/*! @brief Sets the size of the content area of the specified window.
+/*! @  Sets the size of the content area of the specified window.
  *
  *  This function sets the size, in screen coordinates, of the content area of
  *  the specified window.
@@ -2396,7 +2381,7 @@ procedure glfwGetWindowPos(window: pGLFWWindow; var xpos, ypos: integer);
 procedure glfwSetWindowUserPointer(window: pGLFWwindow; p: pointer);
   cdecl; external GLFW_DLL;
 {
-/! brief Returns the user pointer of the specified window.
+/!   Returns the user pointer of the specified window.
 
    This function returns the current value of the user-defined pointer of the
    specified window.  The initial value is `NULL`.
@@ -2416,7 +2401,7 @@ procedure glfwSetWindowUserPointer(window: pGLFWwindow; p: pointer);
 
 function glfwGetWindowUserPointer(window: GLFWwindow): Pointer; cdecl; external GLFW_DLL;
 {
-/! brief Sets the position callback for the specified window.
+/!   Sets the position callback for the specified window.
 
    This function sets the position callback of the specified window, which is
    called when the window is moved.  The callback is provided with the
@@ -2449,7 +2434,7 @@ function glfwGetWindowUserPointer(window: GLFWwindow): Pointer; cdecl; external 
 function glfwSetWindowPosCallback(window: pGLFWwindow;
   cbfun: GLFWwindowposfun): pGLFWwindowposfun; cdecl; external GLFW_DLL;
  {
- /! brief Sets the size callback for the specified window.
+ /!   Sets the size callback for the specified window.
 
    This function sets the size callback of the specified window, which is
    called when the window is resized.  The callback is provided with the size,
@@ -2480,7 +2465,7 @@ function glfwSetWindowPosCallback(window: pGLFWwindow;
 function glfwSetWindowSizeCallback(window: pGLFWwindow;
   cbfun: GLFWwindowsizefun): pGLFWwindowsizefun; cdecl; external GLFW_DLL;
 {
-/! brief Sets the close callback for the specified window.
+/!   Sets the close callback for the specified window.
 
    This function sets the close callback of the specified window, which is
    called when the user attempts to close the window, for example by clicking
@@ -2521,7 +2506,7 @@ function glfwSetWindowCloseCallback(window: pGLFWwindow;
   ccbfun: GLFWwindowclosefun): pGLFWwindowclosefun; cdecl; external GLFW_DLL;
 
 {
-/! brief Sets the refresh callback for the specified window.
+/!   Sets the refresh callback for the specified window.
 
    This function sets the refresh callback of the specified window, which is
    called when the content area of the window needs to be redrawn, for example
@@ -2557,7 +2542,7 @@ function glfwSetWindowCloseCallback(window: pGLFWwindow;
 function glfwSetWindowRefreshCallback(window: pGLFWwindow;
   cbfun: GLFWwindowrefreshfun): pGLFWwindowrefreshfun; cdecl; external GLFW_DLL;
 {
- /! brief Sets the focus callback for the specified window.
+ /!   Sets the focus callback for the specified window.
 
    This function sets the focus callback of the specified window, which is
    called when the window gains or loses input focus.
@@ -2592,7 +2577,7 @@ function glfwSetWindowRefreshCallback(window: pGLFWwindow;
 function glfwSetWindowFocusCallback(window: pGLFWwindow;
   cbfun: GLFWwindowfocusfun): pGLFWwindowfocusfun; cdecl; external GLFW_DLL;
  {
-  /! brief Sets the iconify callback for the specified window.
+  /!   Sets the iconify callback for the specified window.
 
    This function sets the iconification callback of the specified window, which
    is called when the window is iconified or restored.
@@ -2656,7 +2641,7 @@ function glfwSetWindowMaximizeCallback(Windows: pGLFWwindow;
   cbfun: GLFWwindowmaximizefun): pGLFWwindowmaximizefun; cdecl; external GLFW_DLL;
 
 {
- /! brief Sets the framebuffer resize callback for the specified window.
+ /!   Sets the framebuffer resize callback for the specified window.
 
    This function sets the framebuffer resize callback of the specified window,
    which is called when the framebuffer of the specified window is resized.
@@ -2722,7 +2707,7 @@ function glfwSetWindowContentScaleCallback(window: pGLFWwindow;
   cdecl; external GLFW_DLL;
 
  {
-  /! brief Processes all pending events.
+  /!   Processes all pending events.
 
    This function processes only those events that are already in the event
    queue and then returns immediately.  Processing events will cause the window
@@ -2758,7 +2743,7 @@ function glfwSetWindowContentScaleCallback(window: pGLFWwindow;
  }
 procedure glfwPollEvents; cdecl; external GLFW_DLL;
  {
-  /! brief Waits until events are queued and processes them.
+  /!   Waits until events are queued and processes them.
 
    This function puts the calling thread to sleep until at least one event is
    available in the event queue.  Once one or more events are available,
@@ -2870,7 +2855,7 @@ procedure glfwPostEmptyEvent; cdecl; external GLFW_DLL; //Version 3.1
 //Input
 //========================================================================
  {
- /! brief Returns the value of an input option for the specified window.
+ /!   Returns the value of an input option for the specified window.
 
    This function returns the value of an input option for the specified window.
    The mode must be one of ref GLFW_CURSOR, ref GLFW_STICKY_KEYS,
@@ -2894,7 +2879,7 @@ procedure glfwPostEmptyEvent; cdecl; external GLFW_DLL; //Version 3.1
 function glfwGetInputMode(window: pGLFWwindow; mode: integer): integer;
   cdecl; external GLFW_DLL;
  {
-  /! brief Sets an input option for the specified window.
+  /!   Sets an input option for the specified window.
 
    This function sets an input mode option for the specified window.  The mode
    must be one of ref GLFW_CURSOR, ref GLFW_STICKY_KEYS,
@@ -3072,7 +3057,7 @@ function glfwGetKeyName(key, scancode: integer): PChar; cdecl; external GLFW_DLL
 }
 function glfwGetKeyScancode(key: integer): integer; cdecl; external GLFW_DLL;
 {
-/! brief Returns the last reported state of a keyboard key for the specified
+/!   Returns the last reported state of a keyboard key for the specified
    window.
 
    This function returns the last state reported for the specified key to the
@@ -3111,7 +3096,7 @@ function glfwGetKey(window: pGLFWwindow; key: integer): integer;
   cdecl; external GLFW_DLL;
 
  {
- /! brief Returns the last reported state of a mouse button for the specified
+ /!   Returns the last reported state of a mouse button for the specified
    window.
 
    This function returns the last state reported for the specified mouse button
@@ -3140,7 +3125,7 @@ function glfwGetKey(window: pGLFWwindow; key: integer): integer;
 function glfwGetMouseButton(window: pGLFWwindow; button: integer): integer;
   cdecl; external GLFW_DLL;
 {
-/! brief Retrieves the position of the cursor relative to the content area of
+/!   Retrieves the position of the cursor relative to the content area of
    the window.
 
    This function returns the position of the cursor, in screen coordinates,
@@ -3177,7 +3162,7 @@ function glfwGetMouseButton(window: pGLFWwindow; button: integer): integer;
 function glfwGetCursorPos(window: pGLFWwindow; var xpos, ypos: double): integer;
   cdecl; external GLFW_DLL;
  {
- /! brief Sets the position of the cursor, relative to the content area of the
+ /!   Sets the position of the cursor, relative to the content area of the
    window.
 
    This function sets the position, in screen coordinates, of the cursor
@@ -3219,7 +3204,7 @@ function glfwGetCursorPos(window: pGLFWwindow; var xpos, ypos: double): integer;
 procedure glfwSetCursorPos(window: pGLFWwindow; xpos, ypos: double);
   cdecl; external GLFW_DLL;
  {
- /! brief Creates a custom cursor.
+ /!   Creates a custom cursor.
 
    Creates a new custom cursor image that can be set for a window with ref
    glfwSetCursor.  The cursor can be destroyed with ref glfwDestroyCursor.
@@ -3257,7 +3242,7 @@ procedure glfwSetCursorPos(window: pGLFWwindow; xpos, ypos: double);
 function glfwCreateCursor(const image: pGLFWimage; var xhot, yhot: integer): pGLFWcursor;
   cdecl; external GLFW_DLL;
 {
-/! brief Creates a cursor with a standard shape.
+/!   Creates a cursor with a standard shape.
 
    Returns a cursor with a [standard shape](ref shapes), that can be set for
    a window with ref glfwSetCursor.
@@ -3278,7 +3263,7 @@ function glfwCreateCursor(const image: pGLFWimage; var xhot, yhot: integer): pGL
 function glfwCreateStandardCursor(shape: integer): pGLFWcursor;
   cdecl; external GLFW_DLL;
  {
- /! brief Destroys a cursor.
+ /!   Destroys a cursor.
 
    This function destroys a cursor previously created with ref
    glfwCreateCursor.  Any remaining cursors will be destroyed by ref
@@ -3304,7 +3289,7 @@ function glfwCreateStandardCursor(shape: integer): pGLFWcursor;
 procedure glfwDestroyCursor(cursor: pGLFWcursor);
   cdecl; external GLFW_DLL;
 {
-/! brief Sets the cursor for the window.
+/!   Sets the cursor for the window.
 
    This function sets the cursor image to be used when the cursor is over the
    content area of the specified window.  The set cursor will only be visible
@@ -3330,7 +3315,7 @@ procedure glfwDestroyCursor(cursor: pGLFWcursor);
 procedure glfwSetCursor(window: pGLFWwindow; cursor: pGLFWcursor);
   cdecl; external GLFW_DLL;
  {
- /! brief Sets the key callback.
+ /!   Sets the key callback.
 
    This function sets the key callback of the specified window, which is called
    when a key is pressed, repeated or released.
@@ -3380,7 +3365,7 @@ function glfwSetKeyCallback(window: pGLFWwindow; cbfun: GLFWkeyfun): pGLFWKeyFun
   cdecl; external GLFW_DLL;
 {
 
-/! brief Sets the Unicode character callback.
+/!   Sets the Unicode character callback.
 
    This function sets the character callback of the specified window, which is
    called when a Unicode character is input.
@@ -3422,7 +3407,7 @@ function glfwSetCharCallback(window: pGLFWwindow; cdfun: GLFWcharfun): pGLFWchar
   cdecl; external GLFW_DLL;
  {
  
-/! brief Sets the Unicode character with modifiers callback.
+/!   Sets the Unicode character with modifiers callback.
 
    This function sets the character with modifiers callback of the specified
    window, which is called when a Unicode character is input regardless of what
@@ -3463,7 +3448,7 @@ function glfwSetCharCallback(window: pGLFWwindow; cdfun: GLFWcharfun): pGLFWchar
 function glfwSetCharModsCallback(window: GLFWwindow;
   cbfun: PGLFWcharmodsfun): PGLFWcharmodsfun; cdecl; external GLFW_DLL; //Version 3.1
  {
- /! brief Sets the mouse button callback.
+ /!   Sets the mouse button callback.
 
    This function sets the mouse button callback of the specified window, which
    is called when a mouse button is pressed or released.
@@ -3499,7 +3484,7 @@ function glfwSetCharModsCallback(window: GLFWwindow;
 function glfwSetMouseButtonCallback(window: pGLFWwindow;
   cbfun: GLFWmousebuttonfun): pGLFWmousebuttonfun; cdecl; external GLFW_DLL;
  {
- /! brief Sets the cursor position callback.
+ /!   Sets the cursor position callback.
 
    This function sets the cursor position callback of the specified window,
    which is called when the cursor is moved.  The callback is provided with the
@@ -3530,7 +3515,7 @@ function glfwSetMouseButtonCallback(window: pGLFWwindow;
 function glfwSetCursorPosCallback(window: pGLFWwindow;
   cbfun: GLFWcursorposfun): pGLFWcursorposfun; cdecl; external GLFW_DLL;
 {
-/! brief Sets the cursor enter/leave callback.
+/!   Sets the cursor enter/leave callback.
 
    This function sets the cursor boundary crossing callback of the specified
    window, which is called when the cursor enters or leaves the content area of
@@ -3560,7 +3545,7 @@ function glfwSetCursorPosCallback(window: pGLFWwindow;
 function glfwSetCursorEnterCallback(window: pGLFWwindow;
   cbfun: GLFWcursorenterfun): pGLFWcursorenterfun; cdecl; external GLFW_DLL;
  {
- /! brief Sets the scroll callback.
+ /!   Sets the scroll callback.
 
    This function sets the scroll callback of the specified window, which is
    called when a scrolling device is used, such as a mouse wheel or scrolling
@@ -3724,7 +3709,7 @@ function glfwGetJoystickButtons(joy: integer; varcount: integer): pCharArray;
   cdecl; external GLFW_DLL;
 {
 
- brief Returns the state of all hats of the specified joystick.
+   Returns the state of all hats of the specified joystick.
 
   This function returns the state of all hats of the specified joystick.
   Each element in the array is one of the following values:
@@ -3979,7 +3964,7 @@ function glfwSetJoystickCallback(cbfun: GLFWjoystickfun): pGLFWjoystickfun; cdec
 }
 function glfwUpdateGamepadMappings(mappings: PChar): GLFW_INT; cdecl; external GLFW_DLL;
 {
- ! brief Returns the human-readable gamepad name for the specified joystick.
+ !   Returns the human-readable gamepad name for the specified joystick.
 
    This function returns the human-readable name of the gamepad from the
    gamepad mapping assigned to the specified joystick.
@@ -4010,7 +3995,7 @@ function glfwUpdateGamepadMappings(mappings: PChar): GLFW_INT; cdecl; external G
 }
 function glfwGetGamepadName(jid: GLFW_INT): PChar; cdecl; external GLFW_DLL;
 
-{ ! brief Retrieves the state of the specified joystick remapped as a gamepad.
+{ !   Retrieves the state of the specified joystick remapped as a gamepad.
 
    This function retrieves the state of the specified joystick remapped to
    an Xbox-like gamepad.
@@ -4063,7 +4048,7 @@ function glfwGetClipboardString(window: pGLFWwindow): PChar; cdecl; external GLF
 //========================================================================
 procedure glfwSetTime(time: double); cdecl; external GLFW_DLL;
 {
- ! brief Returns the current value of the raw timer.
+ !   Returns the current value of the raw timer.
 
    This function returns the current value of the raw timer, measured in
    1&nbsp; &nbsp;frequency seconds.  To get the frequency, call ref
@@ -4087,7 +4072,7 @@ procedure glfwSetTime(time: double); cdecl; external GLFW_DLL;
 }
 function glfwGetTimerValue(): uint64; cdecl; external GLFW_DLL;
 {
- ! brief Returns the frequency, in Hz, of the raw timer.
+ !   Returns the frequency, in Hz, of the raw timer.
 
    This function returns the frequency, in Hz, of the raw timer.
 
@@ -4321,7 +4306,7 @@ Returns the address of the specified function for the current
  }
 function glfwGetProcAddress(procname: PChar): pGLFWglproc; cdecl; external GLFW_DLL;
 
-{  brief Returns whether the Vulkan loader and an ICD have been found.
+{    Returns whether the Vulkan loader and an ICD have been found.
 
    This function returns whether the Vulkan loader and any minimally functional
    ICD have been found.
