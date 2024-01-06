@@ -14,7 +14,7 @@ such as Linux and FreeBSD.
 
 ## Update 240106
 
-Updated the headers to match the version of headers to the last revision to 3.3.9 revision
+Updated the headers to match the version of headers to the revision to 3.3.9 
 
 ## Update 220822
 
