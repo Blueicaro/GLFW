@@ -3,7 +3,7 @@ More info:
   http://forum.lazarus.freepascal.org/index.php/topic,21961.msg129100.html#msg129100
 
 
-  GLFW 3.3.8 - www.glfw.org
+  GLFW 3.3.9 - www.glfw.org
 
   A library for OpenGL, window and input
  ------------------------------------------------------------------------
@@ -31,6 +31,8 @@ More info:
 
   Pascal header translate by: Jorge Turiel (Aka BlueIcaro)
   with the help of the lazarus community (http://www.lazarus.freepascal.org/index.php)
+
+  GLFW 3.3.9; Date: 240106. Updated headers to  3.3.9 revision
 
   GLFW 3.3.8; Date: 220822. Updated headers to  3.3.8 revision
 
@@ -265,7 +267,7 @@ const
   release is made that does not contain any API changes.
 
  }
-  GLFW_VERSION_REVISION = 8;
+  GLFW_VERSION_REVISION = 9;
   {
       The key or mouse button was released.
   }
