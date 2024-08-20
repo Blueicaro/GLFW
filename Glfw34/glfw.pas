@@ -125,21 +125,11 @@ type
   }
 
 type
-  pGLFWallocator = ^GLFWallocator;
-
-  GLFWallocator = record
-    allocate: pGLFWallocator;
-    reallocate: pGLFWreallocatefun;
-    deallocate: pGLFWdeallocatefun;
-    user: Pointer;
-  end;
-
-type
   pGLFWKeyFun = ^GLFWKeyFun;
-  GLFWKeyFun = procedure(p: pGLFWWindow; i2, i3, i4, i5: longint); cdecl;
+  GLFWKeyFun = procedure(window: pGLFWWindow; key, scancode, action, mods: Integer); cdecl;
 
   pGLFWerrorfun = ^GLFWerrorfun;
-  GLFWerrorfun = procedure(Error: GLFW_INT; Description: PChar); cdecl;
+  GLFWerrorfun = procedure(error_code: Integer; const Description: PChar); cdecl;
 {
    The function pointer type for memory allocation callbacks.
 
@@ -299,14 +289,21 @@ The function pointer type for memory reallocation callbacks.
   pGLFWdeallocatefun = ^GLFWdeallocatefun;
   GLFWdeallocatefun = procedure(block: Pointer; user: Pointer);
 
-
+type
+  pGLFWallocator = ^GLFWallocator;
+  GLFWallocator = record
+    allocate: pGLFWallocator;
+    reallocate: pGLFWreallocatefun;
+    deallocate: pGLFWdeallocatefun;
+    user: Pointer;
+  end;
 
 
   pGLFWmonitorfun = ^GLFWmonitorfun;
-  GLFWmonitorfun = procedure(Monitor: GLFWmonitor); cdecl;
+  GLFWmonitorfun = procedure(Monitor: PGLFWmonitor; event: integer); cdecl;
 
   pGLFWjoystickfun = ^GLFWjoystickfun;
-  GLFWjoystickfun = procedure(jig, event: GLFW_INT); cdecl;
+  GLFWjoystickfun = procedure(jid, event: GLFW_INT); cdecl;
 
 
   pGLFWwindowposfun = ^GLFWwindowposfun;
@@ -322,10 +319,10 @@ The function pointer type for memory reallocation callbacks.
   GLFWwindowrefreshfun = procedure(window: pGLFWwindow); cdecl;
 
   pGLFWwindowfocusfun = ^GLFWwindowfocusfun;
-  GLFWwindowfocusfun = procedure(window: pGLFWwindow); cdecl;
+  GLFWwindowfocusfun = procedure(window: pGLFWwindow; focused: integer); cdecl;
 
   pGLFWwindowiconifyfun = ^GLFWwindowiconifyfun;
-  GLFWwindowiconifyfun = procedure(window: pGLFWwindow); cdecl;
+  GLFWwindowiconifyfun = procedure(window: pGLFWwindow; iconified: integer); cdecl;
 
  {   The function pointer type for window maximize callbacks.
 
@@ -347,11 +344,10 @@ The function pointer type for memory reallocation callbacks.
      }
 
   pGLFWwindowmaximizefun = ^GLFWwindowmaximizefun;
-  GLFWwindowmaximizefun = procedure(Windows: pGLFWwindow); cdecl;
+  GLFWwindowmaximizefun = procedure(window: PGLFWwindow; maximized: integer); cdecl;
 
   pGLFWframebuffersizefun = ^GLFWframebuffersizefun;
-  GLFWframebuffersizefun = procedure(window: pGLFWwindow;
-    witdth, Height: integer); cdecl;
+  GLFWframebuffersizefun = procedure(window: pGLFWwindow; witdth, height: integer); cdecl;
   { The function pointer type for window content scale callbacks.
 
    This is the function pointer type for window content scale callbacks.
@@ -373,24 +369,22 @@ The function pointer type for memory reallocation callbacks.
 
 }
   pGLFWwindowcontentscalefun = ^GLFWwindowcontentscalefun;
-  GLFWwindowcontentscalefun = procedure(window: pGLFWwindow;
-    xscale, yscale: single); cdecl;
+  GLFWwindowcontentscalefun = procedure(window: pGLFWwindow; xscale, yscale: single); cdecl;
 
   pGLFWcharfun = ^GLFWcharfun;
-  GLFWcharfun = procedure(window: pGLFWwindow); cdecl;
+  GLFWcharfun = procedure(window: pGLFWwindow; codepoint: dword); cdecl;
 
   pGLFWmousebuttonfun = ^GLFWmousebuttonfun;
-  GLFWmousebuttonfun = procedure(window: pGLFWwindow;
-    button, action, mods: integer); cdecl;
+  GLFWmousebuttonfun = procedure(window: pGLFWwindow; button, action, mods: integer); cdecl;
 
   pGLFWcursorposfun = ^GLFWcursorposfun;
-  GLFWcursorposfun = procedure(window: pGLFWwindow; xpos, ypos: integer); cdecl;
+  GLFWcursorposfun = procedure(window: pGLFWwindow; xpos, ypos: double); cdecl;
 
   pGLFWcursorenterfun = ^GLFWcursorenterfun;
-  GLFWcursorenterfun = procedure(window: pGLFWwindow); cdecl;
+  GLFWcursorenterfun = procedure(window: pGLFWwindow; entered: integer); cdecl;
 
   pGLFWscrollfun = ^GLFWscrollfun;
-  GLFWscrollfun = procedure(window: pGLFWwindow; xoffset, yoffset: integer); cdecl;
+  GLFWscrollfun = procedure(window: pGLFWwindow; xoffset, yoffset: double); cdecl;
 
   pGLFWglproc = ^GLFWglproc;
   GLFWglproc = procedure; cdecl;
@@ -416,18 +410,18 @@ The function pointer type for memory reallocation callbacks.
 
 
   PGLFWcharmodsfun = ^GLFWcharmodsfun;
-  GLFWcharmodsfun = procedure(window: pGLFWwindow; cbfun: pGLFWcharmodsfun);
+  GLFWcharmodsfun = procedure(window: pGLFWwindow; codepoint: dword; mods: integer);
 
 type
   pGLFWdropfun = ^GLFWdropfun;
-  GLFWdropfun = procedure(window: pGLFWwindow; Count: integer; names: PChar);
+  GLFWdropfun = procedure(window: pGLFWwindow; count: integer; const names: pchar);
 
 
 const
   {$IFDEF MSWINDOWS}
   GLFW_DLL = 'GLFW3.DLL';
   {$ELSE}
-  GLFW_DLL = 'GLFW3.so';
+  GLFW_DLL = 'libglfw.so.3.4';
   {$ENDIF}
 
   //========================================================================
@@ -816,6 +810,16 @@ const
     }
   GLFW_COCOA_MENUBAR = $00051002;
 
+  GLFW_PLATFORM               = $00050003;
+  GLFW_X11_XCB_VULKAN_SURFACE = $00052001;
+  GLFW_WAYLAND_LIBDECOR       = $00053001;
+  GLFW_ANY_PLATFORM           = $00060000;
+  GLFW_PLATFORM_WIN32         = $00060001;
+  GLFW_PLATFORM_COCOA         = $00060002;
+  GLFW_PLATFORM_WAYLAND       = $00060003;
+  GLFW_PLATFORM_X11           = $00060004;
+  GLFW_PLATFORM_NULL          = $00060005;
+
   GLFW_DONT_CARE = -1;
 
   //All call must be  cdecl
@@ -856,7 +860,7 @@ const
    since Added in version 1.0.
 
  }
-function glfwInit: integer cdecl; external GLFW_DLL;
+function glfwInit: integer; cdecl; external GLFW_DLL;
  {
 Terminates the GLFW library.
 
@@ -916,7 +920,7 @@ procedure glfwTerminate; cdecl; external GLFW_DLL;
 
 
 }
-procedure glfwInitHint(hint: integer; Value: integer); cdecl; external GLFW_DLL;
+procedure glfwInitHint(hint: integer; value: integer); cdecl; external GLFW_DLL;
 
 {
 
@@ -951,7 +955,7 @@ procedure glfwInitHint(hint: integer; Value: integer); cdecl; external GLFW_DLL;
 
 }
 
-procedure glfwInitAllocator(pGLFWallocator); cdecl; external GLFW_DLL;
+procedure glfwInitAllocator(const allocator: pGLFWallocator); cdecl; external GLFW_DLL;
 
  {
 
@@ -974,7 +978,7 @@ procedure glfwInitAllocator(pGLFWallocator); cdecl; external GLFW_DLL;
    thread_safety This function may be called from any thread.
 
  }
-procedure glfwGetVersion(major, minor, rev: integer); cdecl; external GLFW_DLL;
+procedure glfwGetVersion(major, minor, rev: pinteger); cdecl; external GLFW_DLL;
  {
  Returns a string describing the compile-time configuration.
 
@@ -999,7 +1003,7 @@ procedure glfwGetVersion(major, minor, rev: integer); cdecl; external GLFW_DLL;
    thread_safety This function may be called from any thread.
 
  }
-function glfwGetVersionString: PChar; cdecl; external GLFW_DLL;
+function glfwGetVersionString(): PChar; cdecl; external GLFW_DLL;
 {
  Returns and clears the last error for the calling thread.
 
@@ -1031,7 +1035,7 @@ function glfwGetVersionString: PChar; cdecl; external GLFW_DLL;
    ingroup init
 
 }
-function glfwGetError(description: PChar): integer; cdecl; external GLFW_DLL;
+function glfwGetError(const description: PPChar): integer; cdecl; external GLFW_DLL;
 {
 / Returns the currently selected platform.
 
@@ -1113,7 +1117,7 @@ function glfwPlatformSupported(plattform: integer): integer; cdecl; external GLF
 
    since Added in version 3.0.
  }
-function glfwGetMonitors(var Monitors: GLFW_INT): GLFWmonitor; cdecl; external GLFW_DLL;
+function glfwGetMonitors(var Monitors: GLFW_INT): PGLFWmonitor; cdecl; external GLFW_DLL;
 {
 /!   Returns the primary monitor.
 
@@ -1137,7 +1141,7 @@ function glfwGetMonitors(var Monitors: GLFW_INT): GLFWmonitor; cdecl; external G
 
 
 }
-function glfwGetPrimaryMonitor: pGLFWmonitor; cdecl; external GLFW_DLL;
+function glfwGetPrimaryMonitor(): pGLFWmonitor; cdecl; external GLFW_DLL;
 {
 /!   Returns the position of the monitor's viewport on the virtual screen.
 
@@ -1160,8 +1164,7 @@ function glfwGetPrimaryMonitor: pGLFWmonitor; cdecl; external GLFW_DLL;
 
    since Added in version 3.0.
 }
-procedure glfwGetMonitorPos(monitor: pGLFWmonitor; var xpos: GLFW_INT;
-  var ypos: GLFW_INT); cdecl; external GLFW_DLL;
+procedure glfwGetMonitorPos(monitor: pGLFWmonitor; var xpos: GLFW_INT; var ypos: GLFW_INT); cdecl; external GLFW_DLL;
 { Retrieves the work area of the monitor.
 
    This function returns the position, in screen coordinates, of the upper-left
@@ -1193,8 +1196,7 @@ procedure glfwGetMonitorPos(monitor: pGLFWmonitor; var xpos: GLFW_INT;
  /
 GLFWAPI void glfwGetMonitorWorkarea(GLFWmonitor monitor, int xpos, int ypos, int width, int height);}
 
-procedure glfwGetMonitorWorkarea(monitor: pGLFWmonitor;
-  var xpos, ypos, Width, Height: GLFW_INT); cdecl; external GLFW_DLL;
+procedure glfwGetMonitorWorkarea(monitor: pGLFWmonitor; var xpos, ypos, Width, Height: GLFW_INT); cdecl; external GLFW_DLL;
  {
  /!   Returns the physical size of the monitor.
 
@@ -1226,8 +1228,7 @@ procedure glfwGetMonitorWorkarea(monitor: pGLFWmonitor;
 
    since Added in version 3.0.
  }
-procedure glfwGetMonitorPhysicalSize(Monitor: pGLFWmonitor; var Width: GLFW_INT;
-  var Height: GLFW_INT); cdecl; external GLFW_DLL;
+procedure glfwGetMonitorPhysicalSize(Monitor: pGLFWmonitor; var WidthMM: GLFW_INT; var HeightMM: GLFW_INT); cdecl; external GLFW_DLL;
 
 { Retrieves the content scale for the specified monitor.
 
@@ -1311,7 +1312,7 @@ function glfwGetMonitorName(Monitor: pGLFWmonitor): PChar; cdecl; external GLFW_
    ingroup monitor
  /
 GLFWAPI void glfwSetMonitorUserPointer(GLFWmonitor monitor, void pointer);}
-procedure glfwSetMonitorUserPointer(pGLFWmonitor, UserPointer: Pointer);
+procedure glfwSetMonitorUserPointer(Monitor: pGLFWmonitor; UserPointer: Pointer);
   cdecl; external GLFW_DLL;
 
 { Returns the user pointer of the specified monitor.
@@ -1408,7 +1409,7 @@ function glfwSetMonitorCallback(cbfun: GLFWmonitorfun): pGLFWmonitorfun;
    ingroup monitor
  /
 }
-function glfwGetVideoModes(monitor: pGLFWmonitor; var Count: longint): PGLFWvidmode;
+function glfwGetVideoModes(monitor: pGLFWmonitor; var Count: integer): PGLFWvidmode;
   cdecl; external GLFW_DLL;
   {
   /!   Returns the current mode of the specified monitor.
@@ -1593,7 +1594,7 @@ procedure glfwDefaultWindowHints; cdecl; external GLFW_DLL;
    since Added in version 3.0.  Replaces `glfwOpenWindowHint`.
 }
 
-procedure glfwWindowHint(target: integer; hint: integer); cdecl; external GLFW_DLL;
+procedure glfwWindowHint(hint: integer; value: integer); cdecl; external GLFW_DLL;
 {
 /!   Sets the specified window hint to the desired value.
 
@@ -1630,7 +1631,7 @@ procedure glfwWindowHint(target: integer; hint: integer); cdecl; external GLFW_D
    since Added in version 3.3.
 
 }
-procedure glfwWindowHintString(hint: integer; const Value: PChar);
+procedure glfwWindowHintString(hint: integer; const value: PChar);
   cdecl; external GLFW_DLL;
   {
   
@@ -1857,7 +1858,7 @@ function glfwWindowShouldClose(Window: pGLFWwindow): integer; cdecl; external GL
 
    since Added in version 3.0.
  }
-procedure glfwSetWindowShouldClose(window: pGLFWwindow; Action: GLFW_INT);
+procedure glfwSetWindowShouldClose(window: pGLFWwindow; value: integer);
   cdecl; external GLFW_DLL;
  {
  Sets the title of the specified window.
@@ -1882,7 +1883,7 @@ procedure glfwSetWindowShouldClose(window: pGLFWwindow; Action: GLFW_INT);
    glfw3 Added window handle parameter.
  }
 
-procedure glfwSetWindowTitle(window: pGLFWwindow; title: PChar);
+procedure glfwSetWindowTitle(window: pGLFWwindow; const title: PChar);
   cdecl; external GLFW_DLL;
 
  {Returns the title of the specified window.
@@ -1917,7 +1918,7 @@ procedure glfwSetWindowTitle(window: pGLFWwindow; title: PChar);
 
 }
 
-function glfwGetWindowTitle(Windows: pGLFWwindow): PChar; cdecl; external GLFW_DLL;
+function glfwGetWindowTitle(window: pGLFWwindow): PChar; cdecl; external GLFW_DLL;
 
 
 
@@ -1966,7 +1967,7 @@ function glfwGetWindowTitle(Windows: pGLFWwindow): PChar; cdecl; external GLFW_D
    since Added in version 3.2.
 
 }
-procedure glfwSetWindowIcon(window: pGLFWWindow; Count: integer; images: pGLFWimage);
+procedure glfwSetWindowIcon(window: pGLFWWindow; count: integer; images: pGLFWimage);
   cdecl; external GLFW_DLL;
  {
  
@@ -2030,7 +2031,7 @@ Retrieves the size of the content area of the specified window.
    since Added in version 1.0.
    glfw3 Added window handle parameter.
 }
-procedure glfwGetWindowSize(window: pGLFWwindow; var Width, Height: integer);
+procedure glfwGetWindowSize(window: pGLFWwindow; var width, height: integer);
   cdecl; external GLFW_DLL;
  {
  Sets the size limits of the specified window.
@@ -2156,7 +2157,7 @@ procedure glfwSetWindowAspectRatio(window: pGLFWwindow; numer: integer; demon: i
  *  @glfw3 Added window handle parameter.
  *
 }
-procedure glfwSetWindowSize(window: pGLFWwindow; var Width, Height: integer);
+procedure glfwSetWindowSize(window: pGLFWwindow; Width, Height: integer);
   cdecl; external GLFW_DLL;
 
 {
@@ -2185,7 +2186,7 @@ procedure glfwSetWindowSize(window: pGLFWwindow; var Width, Height: integer);
 
    since Added in version 3.0.
 }
-procedure glfwGetFramebufferSize(window: pGLFWwindow; var Width, Height: integer);
+procedure glfwGetFramebufferSize(window: pGLFWwindow; var width, height: integer);
   cdecl; external GLFW_DLL;
  {
  Retrieves the size of the frame of the window.
@@ -2223,7 +2224,7 @@ procedure glfwGetFramebufferSize(window: pGLFWwindow; var Width, Height: integer
 
  }
 
-procedure glfwGetWindowFrameSize(window: GLFWwindow; left, top, right, bottom: integer);
+procedure glfwGetWindowFrameSize(window: PGLFWwindow; var left, top, right, bottom: integer);
   cdecl; external GLFW_DLL;
 
 
@@ -2591,7 +2592,7 @@ function glfwGetWindowMonitor(window: pGLFWwindow): pGLFWmonitor;
    since Added in version 3.2.
 }
 procedure glfwSetWindowMonitor(window: pGLFWwindow; monitor: pGLFWmonitor;
-  xpos, ypos, Width, Height, refreshRate: integer); cdecl; external GLFW_DLL;
+  xpos, ypos, width, height, refreshRate: integer); cdecl; external GLFW_DLL;
   {
    Returns an attribute of the specified window.
 
@@ -2667,7 +2668,7 @@ procedure glfwGetWindowAttrib(window: pGLFWwindow; attrib: integer);
    ingroup window
  }
 
-procedure glfwSetWindowAttrib(window: pGLFWwindow; att: integer; Value: integer);
+procedure glfwSetWindowAttrib(window: pGLFWwindow; att: integer; value: integer);
   cdecl; external GLFW_DLL;
 
 
@@ -2696,7 +2697,7 @@ procedure glfwGetWindowPos(window: pGLFWWindow; var xpos, ypos: integer);
    since Added in version 3.0.
 }
 
-procedure glfwSetWindowUserPointer(window: pGLFWwindow; p: pointer);
+procedure glfwSetWindowUserPointer(window: pGLFWwindow; userpointer: pointer);
   cdecl; external GLFW_DLL;
 {
 /!   Returns the user pointer of the specified window.
@@ -2717,7 +2718,7 @@ procedure glfwSetWindowUserPointer(window: pGLFWwindow; p: pointer);
    since Added in version 3.0.
  }
 
-function glfwGetWindowUserPointer(window: GLFWwindow): Pointer; cdecl; external GLFW_DLL;
+function glfwGetWindowUserPointer(window: pGLFWwindow): Pointer; cdecl; external GLFW_DLL;
 {
 /!   Sets the position callback for the specified window.
 
@@ -3255,7 +3256,7 @@ function glfwGetInputMode(window: pGLFWwindow; mode: integer): integer;
 
    since Added in version 3.0.  Replaces `glfwEnable` and `glfwDisable`.
  }
-procedure glfwSetInputMode(window: pGLFWwindow; mode, Value: integer);
+procedure glfwSetInputMode(window: pGLFWwindow; mode, value: integer);
   cdecl; external GLFW_DLL;
 { Returns whether raw mouse motion is supported.
 
@@ -3477,7 +3478,7 @@ function glfwGetMouseButton(window: pGLFWwindow; button: integer): integer;
 
    since Added in version 3.0.  Replaces `glfwGetMousePos`.
 }
-function glfwGetCursorPos(window: pGLFWwindow; var xpos, ypos: double): integer;
+procedure glfwGetCursorPos(window: pGLFWwindow; var xpos, ypos: double);
   cdecl; external GLFW_DLL;
  {
  /!   Sets the position of the cursor, relative to the content area of the
@@ -3951,7 +3952,7 @@ function glfwSetDropCallback(window: pGLFWwindow; cbfun: GLFWdropfun): pGLFWdrop
  *
  *  @since Added in version 3.0.  Replaces `glfwGetJoystickParam`.
 }
-function glfwJoystickPresent(joy: integer): integer; cdecl; external GLFW_DLL;
+function glfwJoystickPresent(jid: integer): integer; cdecl; external GLFW_DLL;
  {
  Returns the values of all axes of the specified joystick.
  *
@@ -3982,7 +3983,7 @@ function glfwJoystickPresent(joy: integer): integer; cdecl; external GLFW_DLL;
  *
  *  @since Added in version 3.0.  Replaces `glfwGetJoystickPos`.
  }
-function glfwGetJoystickAxes(joy: integer; var Count: integer): pfloat;
+function glfwGetJoystickAxes(jid: integer; var count: integer): pfloat;
   cdecl; external GLFW_DLL;
  {
  Returns the state of all buttons of the specified joystick.
@@ -4022,7 +4023,7 @@ function glfwGetJoystickAxes(joy: integer; var Count: integer): pfloat;
  *  @since Added in version 2.2.
  *  @glfw3 Changed to return a dynamic array.
  }
-function glfwGetJoystickButtons(joy: integer; varcount: integer): pCharArray;
+function glfwGetJoystickButtons(jid: integer; var count: integer): PByte;
   cdecl; external GLFW_DLL;
 {
 
@@ -4080,9 +4081,9 @@ function glfwGetJoystickButtons(joy: integer; varcount: integer): pCharArray;
 
 
 }
-function glfwGetJoystickHats(jid: integer; var Count: integer): PChar;
+function glfwGetJoystickHats(jid: integer; var count: integer): PByte;
   cdecl; external GLFW_DLL;
-function glfwGetJoystickName(joy: integer): PChar; cdecl; external GLFW_DLL;
+function glfwGetJoystickName(jid: integer): PChar; cdecl; external GLFW_DLL;
 { Returns the SDL compatible GUID of the specified joystick.
 
    This function returns the SDL compatible GUID, as a UTF-8 encoded
@@ -4151,7 +4152,7 @@ function glfwGetJoystickGUID(jid: integer): PChar; cdecl; external GLFW_DLL;
    ingroup input
  /
 }
-procedure glfwSetJoystickUserPointer(jid: integer; newvalue: Pointer);
+procedure glfwSetJoystickUserPointer(jid: integer; userpointer: Pointer);
   cdecl; external GLFW_DLL;
  { Returns the user pointer of the specified joystick.
 
@@ -4205,7 +4206,7 @@ function glfwGetJoystickUserPointer(jid: integer): Pointer; cdecl; external GLFW
    ingroup input
 
 }
-function glfwJoystickIsGamepad(jid: integer): GLFW_INT; cdecl; external GLFW_DLL;
+function glfwJoystickIsGamepad(jid: integer): integer; cdecl; external GLFW_DLL;
 { Sets the joystick configuration callback.
 
    This function sets the joystick configuration callback, or removes the
@@ -4279,7 +4280,7 @@ function glfwSetJoystickCallback(cbfun: GLFWjoystickfun): pGLFWjoystickfun;
 
 
 }
-function glfwUpdateGamepadMappings(mappings: PChar): GLFW_INT; cdecl; external GLFW_DLL;
+function glfwUpdateGamepadMappings(mappings: PChar): integer; cdecl; external GLFW_DLL;
 {
  !   Returns the human-readable gamepad name for the specified joystick.
 
@@ -4310,7 +4311,7 @@ function glfwUpdateGamepadMappings(mappings: PChar): GLFW_INT; cdecl; external G
    ingroup input
 
 }
-function glfwGetGamepadName(jid: GLFW_INT): PChar; cdecl; external GLFW_DLL;
+function glfwGetGamepadName(jid: integer): PChar; cdecl; external GLFW_DLL;
 
 { !   Retrieves the state of the specified joystick remapped as a gamepad.
 
@@ -4350,19 +4351,23 @@ function glfwGetGamepadName(jid: GLFW_INT): PChar; cdecl; external GLFW_DLL;
 
 
 }
-function glfwGetGamepadState(jid: GLFW_INT; state: pGLFWgamepadstate): GLFW_INT;
+function glfwGetGamepadState(jid: integer; state: pGLFWgamepadstate): integer;
   cdecl; external GLFW_DLL;
 
 
 //  ========================================================================
 //   clipboard
 //  ========================================================================
-procedure glfwSetClipboardString(window: pGLFWwindow; char: string);
+procedure glfwSetClipboardString(window: pGLFWwindow; const cbstring: PChar);
   cdecl; external GLFW_DLL;
+
 function glfwGetClipboardString(window: pGLFWwindow): PChar; cdecl; external GLFW_DLL;
 
 //Time
 //========================================================================
+
+function glfwGetTime(): double; cdecl; external GLFW_DLL;
+
 procedure glfwSetTime(time: double); cdecl; external GLFW_DLL;
 {
  !   Returns the current value of the raw timer.
@@ -4703,7 +4708,7 @@ function glfwVulkanSupported(): integer; cdecl; external GLFW_DLL;
    ingroup vulkan
 
 }
-function glfwGetRequiredInstanceExtensions(var Count: uint32): PChar;
+function glfwGetRequiredInstanceExtensions(var count: uint32): PPChar;
   cdecl; external GLFW_DLL;
 
 
