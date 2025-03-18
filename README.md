@@ -12,6 +12,10 @@ It provides a simple API for creating windows, contexts and surfaces, receiving 
 GLFW is written in C and has native support for Windows, OS X and many Unix-like systems using the X Window System, 
 such as Linux and FreeBSD.
 
+## Update 2403017
+
+Release 3.4 GLFW
+
 ## Update 240106
 
 Updated the headers to match the version of headers to the revision to 3.3.9 
