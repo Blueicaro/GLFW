@@ -1,32 +1,35 @@
-# GLFW
-Headers of  GLFW for FreePascal and Lazarus
-Here you can find Headers for Free Pascal / Lazarus files to use GLFW.
-The orignal proyect is here:
+# GLFW Headers for Free Pascal and Lazarus
+
+These files provide the **Free Pascal / Lazarus headers** necessary to use the **GLFW** library.
+
+The original GLFW project can be found here:
 http://www.glfw.org/
 
-This descriptions is taken from the orginal web:
+### What is GLFW?
 
-GLFW is an Open Source, multi-platform library for OpenGL,
-OpenGL ES and Vulkan development on the desktop.
-It provides a simple API for creating windows, contexts and surfaces, receiving input and events.
-GLFW is written in C and has native support for Windows, OS X and many Unix-like systems using the X Window System, 
-such as Linux and FreeBSD.
+*(The following description is sourced from the official GLFW website:)*
 
-## Update 2403017
+**GLFW** is an **Open Source, multi-platform library** designed for OpenGL, OpenGL ES, and Vulkan development on the desktop. It offers a simple API for creating windows, contexts, and surfaces, as well as for receiving input and events.
 
-Release 3.4 GLFW
+GLFW is written in **C** and provides native support for **Windows, macOS,** and many Unix-like systems using the X Window System, such as **Linux** and **FreeBSD.**
 
-## Update 240106
+---
 
-Updated the headers to match the version of headers to the revision to 3.3.9 
+## Release Notes
 
-## Update 220822
+### Update 2403017
 
-Updated the headers to match the version of headers to the last revision, 3.3.8
+* **Released GLFW version 3.4.**
 
-## Update 220417
+### Update 240106
 
-I updated the struct of files. Now all files are called glfw.pas. Every version has a folder. For example in folder GLFW31, you will
-find the source for 3.1 version.
+* Updated the headers to match **GLFW version 3.3.9.**
 
-Also I updated the headers to match the version of headers to the last revision, 3.3.7
+### Update 220822
+
+* Updated the headers to match the latest revision, **GLFW version 3.3.8.**
+
+### Update 220417
+
+* **File Structure Update:** The header files have been reorganized. All files are now named **`glfw.pas`**. Each version is placed in its own dedicated folder (e.g., you will find the source for version 3.1 in the **`GLFW31`** folder).
+* Updated the headers to match the latest revision, **GLFW version 3.3.7.**
