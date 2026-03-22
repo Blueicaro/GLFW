@@ -57,6 +57,13 @@ begin
   glClearColor(0.1, 0.2, 0.3, 1.0);
 end;
 ```
+
+---
+
+## ⚡ Vulkan Support
+
+While these headers include GLFW's Vulkan-related functions, they are primarily designed for OpenGL development. For more details on how to use Vulkan with this unit, please refer to [vulkan_status.md](vulkan_status.md).
+
 ## 🤝 Credits
 
 * **GLFW Library:** [Official Team](https://www.glfw.org/)
