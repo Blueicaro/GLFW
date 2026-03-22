@@ -29,7 +29,7 @@ GLFW is written in **C** and provides native support for **Windows, macOS,** and
 
 ```pascal
 uses
-  glfw;
+  glfw,dglOpenGL;
 ```
 
 
