@@ -70,6 +70,5 @@ Recommended Vulkan Loaders for Pascal
 
 To obtain the necessary type definitions (VkInstance, etc.), you can use:
 
-PasVulkan: The most complete and modern framework for Vulkan in Pascal.
+[PasVulkan](https://github.com/BeRo1985/pasvulkan): The most complete and modern framework for Vulkan in Pascal.
 
-Vulkan-Headers-Pascal: A direct translation of the C headers.
