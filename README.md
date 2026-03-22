@@ -56,7 +56,7 @@ begin
   // Now you can use OpenGL commands
   glClearColor(0.1, 0.2, 0.3, 1.0);
 end;
-
+```
 ## 🤝 Credits
 
 * **GLFW Library:** [Official Team](https://www.glfw.org/)
